@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.index.vo.ZaUserProfitMapperVo" >
+  <resultMap id="BaseResultMap" type="com.tz.pojo.ZaUserProfit" >
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="coin_consum_total" jdbcType="DECIMAL" property="coinConsumTotal" />
+    <result column="coin_surplus" jdbcType="DECIMAL" property="coinSurplus" />
+    <result column="coin_income" jdbcType="DECIMAL" property="coinIncome" />
+    <result column="coin_in_total" jdbcType="DECIMAL" property="coinInTotal" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="user_type" jdbcType="INTEGER" property="userType" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="last_use_time" jdbcType="TIMESTAMP" property="lastUseTime" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  
+  <!-- 查询某一用户的剩余货币值 -->
+  <select id="getUserProfitById" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	SELECT id,user_id, coin_consum_total,coin_surplus,coin_income,coin_in_total,`status` FROM `za_user_profit` WHERE user_id=#{userId,jdbcType=VARCHAR}
+  </select>
+  <!-- 修改用户打赏后或者收益的剩余值 -->
+  <update id="updateUserProfitById" parameterType="com.tz.pojo.ZaUserProfit">
+  	 update za_user_profit
+  	 <set>
+      <if test="coinConsumTotal != null">
+        coin_consum_total = #{coinConsumTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="coinSurplus != null">
+        coin_surplus = #{coinSurplus,jdbcType=DECIMAL},
+      </if>
+      <if test="coinIncome != null">
+        coin_income = #{coinIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="coinInTotal != null">
+        coin_in_total = #{coinInTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="lastUseTime != null">
+        last_use_time = #{lastUseTime,jdbcType=TIMESTAMP},
+      </if>
+       updated_time = NOW(),
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+ 
+ <!-- 当用户收益不存在时插入用户收益数据 -->
+  <insert id="insertUserProfit" parameterType="com.tz.pojo.ZaUserProfit">
+    insert into za_user_profit
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="coinConsumTotal != null">
+        coin_consum_total,
+      </if>
+      <if test="coinSurplus != null">
+        coin_surplus,
+      </if>
+      <if test="coinIncome != null">
+        coin_income,
+      </if>
+      <if test="coinInTotal != null">
+        coin_in_total,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="obType != null">
+        user_type,
+      </if>
+        created_time,
+      <if test="lastUseTime != null">
+        last_use_time,
+      </if>
+        updated_time,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="coinConsumTotal != null">
+        #{coinConsumTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="coinSurplus != null">
+        #{coinSurplus,jdbcType=DECIMAL},
+      </if>
+      <if test="coinIncome != null">
+        #{coinIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="coinInTotal != null">
+        #{coinInTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="obType != null">
+        #{obType,jdbcType=INTEGER},
+      </if>
+       NOW(),
+      <if test="lastUseTime != null">
+        #{lastUseTime,jdbcType=TIMESTAMP},
+      </if>
+       NOW(),
+    </trim>
+  </insert>
+  
+  
+</mapper>

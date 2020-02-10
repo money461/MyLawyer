@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.vo.ZaAdminUserMappperVo" >
+  <resultMap id="BaseResultMap" type="com.tz.pojo.vo.ZaAdminUserVo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_account" property="userAccount" jdbcType="VARCHAR" />
+    <result column="user_status" property="userStatus" jdbcType="VARCHAR" />
+    <result column="user_nick" property="userNick" jdbcType="VARCHAR" />
+    <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+    <result column="head_url" property="headUrl" jdbcType="VARCHAR" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="getDeletedUserList" resultMap="BaseResultMap" parameterType="java.util.Map">
+  <choose>
+  	<when test="userType!=null and userType==1">
+			SELECT
+			id,
+			user_account,
+			user_nick,
+			user_phone,
+			head_url,
+			CASE status WHEN 0 THEN '冻结' WHEN 1 THEN '正常' WHEN 2 THEN '回收站待处理' END
+			user_status,
+			updated_time
+			FROM
+			za_user
+			WHERE
+			1=1
+			<if test="status!=null">
+			AND	status = #{status,jdbcType=INTEGER}
+			</if>
+			<if test="name!=null">
+			AND user_account like #{name,jdbcType=VARCHAR}
+			</if>
+			<if test ="startTime!= null">
+			AND updated_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+		   </if>
+			ORDER BY updated_time DESC
+  	</when>
+  		<when test="userType!=null and userType==2">
+				SELECT
+				id,
+				law_logo head_url,
+				law_office user_nick,
+				CONCAT(real_name,'律师') user_account,
+				law_phone user_phone,
+				CASE law_status WHEN 0 THEN '审核中' WHEN 1 THEN '审核通过' WHEN 2 THEN '律师账户冻结'
+				WHEN 3 THEN '回收站待处理' WHEN 4 THEN '未审核通过' END user_status,
+				updated_time
+				FROM
+				za_lawyer_authentication
+				WHERE
+				1=1
+				<if test="status!=null">
+				AND	law_status = #{status,jdbcType=INTEGER}
+				</if>
+				<if test="name!=null">
+				AND real_name like #{name,jdbcType=VARCHAR}
+				</if>
+				<if test ="startTime!= null">
+				AND updated_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+			   </if>
+				ORDER BY updated_time DESC
+  		
+  		</when>
+  		<when test="userType!=null and userType==3">
+				SELECT
+				id,
+				com_name user_account,
+				com_nickname user_nick,
+				com_phone user_phone,
+				com_logo head_url,
+				CASE com_status WHEN 0 THEN '未支付' WHEN 1 THEN '审核通过正常运营' WHEN 2 THEN '企业关停'
+				WHEN 3 THEN '回收站待处理' WHEN 4 THEN '企业账户冻结' WHEN 5 THEN '待审核中' WHEN 6
+				THEN '审核不通过' END user_status,
+				updated_time
+				FROM
+				za_com_authentication
+				WHERE
+				1 = 1
+				<if test="status!=null">
+				AND	com_status = #{status,jdbcType=INTEGER}
+				</if>
+				<if test="name!=null">
+				AND com_name like #{name,jdbcType=VARCHAR}
+				</if>
+				<if test ="startTime!= null">
+				AND updated_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+			   </if>
+				ORDER BY updated_time DESC	
+  		</when>
+  </choose>
+		  	
+  </select>
+  
+  
+  <!-- 强制删除用户信息 -->
+  <delete id="forceDelUserById" >
+    <if test="userType!=null and userType==1">
+	  	DELETE FROM za_user WHERE id=#{id,jdbcType=VARCHAR};
+		DELETE from za_user_escrow WHERE user_id=#{id,jdbcType=VARCHAR}
+    </if>
+     <if test="userType!=null and userType==2">
+     	DELETE FROM za_lawyer_authentication WHERE id=#{id,jdbcType=VARCHAR};
+		DELETE from za_user_escrow WHERE user_id=#{id,jdbcType=VARCHAR}
+     </if>
+      <if test="userType!=null and userType==3">
+      	DELETE FROM za_com_authentication WHERE id=#{id,jdbcType=VARCHAR};
+		DELETE from za_user_escrow WHERE user_id=#{id,jdbcType=VARCHAR}
+      </if>
+  </delete>
+  
+  
+</mapper>

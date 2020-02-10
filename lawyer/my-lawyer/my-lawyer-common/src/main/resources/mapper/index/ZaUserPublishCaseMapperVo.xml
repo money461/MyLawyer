@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.index.vo.ZaUserPublishCaseMapperVo" >
+  <resultMap id="BaseResultMap" type="com.tz.pojo.ZaUserPublishCase" >
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="law_id" jdbcType="VARCHAR" property="lawId" />
+    <result column="award_id" jdbcType="VARCHAR" property="awardId" />
+    <result column="case_id" jdbcType="INTEGER" property="caseId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="content_desc" jdbcType="VARCHAR" property="contentDesc" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="case_address" jdbcType="VARCHAR" property="caseAddress" />
+    <result column="case_lon" jdbcType="DOUBLE" property="caseLon" />
+    <result column="case_lat" jdbcType="DOUBLE" property="caseLat" />
+    <result column="geo_code" jdbcType="CHAR" property="geoCode" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+  </resultMap>
+ <!-- 防止案件重复发布 -->
+ <select id="avoidPublishCase" resultType="java.lang.Integer" parameterType="java.lang.String">
+ 	SELECT count(*) from za_user_publish_case WHERE award_id=#{awardId}
+ </select>
+ 
+ <!-- 查询用户发布案件 -->
+ <resultMap type="com.tz.pojo.index.vo.RecomPublishCaseVo" id="UserPublishCaseMap">
+ 	<result column="category_id"  property="categoryId" jdbcType="VARCHAR" />
+  	<result column="sort_code"  property="sortCode" jdbcType="VARCHAR" />
+  	<result column="category_name"  property="categoryName" jdbcType="VARCHAR" />
+ 
+ <collection property="userPublishCaseList" ofType="com.tz.pojo.index.vo.ZaUserPublishCaseVo">
+ 	 <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="case_id" jdbcType="INTEGER" property="caseId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="content_desc" jdbcType="VARCHAR" property="contentDesc" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="case_lon" jdbcType="DOUBLE" property="caseLon" />
+    <result column="case_lat" jdbcType="DOUBLE" property="caseLat" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+    
+    <result column="reward" property="reward" jdbcType="DECIMAL" />
+    <result column="case_name" jdbcType="VARCHAR" property="caseName" />
+    <result column="head_url" jdbcType="VARCHAR" property="headUrl" />
+    <result column="user_nick" jdbcType="VARCHAR" property="userNick" />
+    <result column="deadline" jdbcType="VARCHAR" property="deadline" />
+ </collection>
+    
+ </resultMap>
+ <!-- 随机推荐已打赏成功案件 -->
+ <select id="getUserPublishCase" resultMap="UserPublishCaseMap" parameterType="java.util.Map">
+			   SELECT
+			    ca.id category_id,
+				ca.category_name,
+				ca.sort_code,
+				upc.id,
+				upc.user_id,
+				upc.case_id,
+				upc.title,
+				upc.content_desc,
+				upc.province,
+				upc.city,
+				upc.case_lon,
+				upc.case_lat,
+				upc.updated_time,
+				TIMESTAMPDIFF(HOUR, NOW(), upc.end_time) deadline,
+				uar.reward,
+				cc.case_name,
+				u.head_url,
+				u.user_nick
+			FROM
+				za_content_category  AS ca
+			INNER JOIN za_user_publish_case AS upc ON 1 = 1
+			INNER JOIN za_user_award_record AS uar ON upc.award_id = uar.id
+			INNER JOIN za_user AS u ON u.id = upc.user_id
+			INNER JOIN za_case_category cc ON upc.case_id=cc.id
+			WHERE
+			   upc.`status` = 0
+		  AND
+               TIMESTAMPDIFF(HOUR, NOW(), upc.end_time)>=0
+		<if test="sortCode!=null">
+			AND ca.sort_code =#{sortCode}
+		</if>
+		<if test="sortCode==8 or sortCode==5">
+		AND upc.type = 1
+		</if>
+		<if test="sortCode==9 or sortCode==6">
+		AND upc.type = 2
+		</if>
+		AND ca.category_status = 1
+		AND uar.award_status = 1
+		AND u.`status` = 1
+		<if test="geoCode!=null">
+			AND upc.geo_code LIKE CONCAT(#{geoCode}, '%')
+		</if>
+		<if test="caseId!=null">
+		    AND upc.case_id = #{caseId}
+		</if>
+		<if test="sortCode==8 or sortCode==9">
+		ORDER BY
+			RAND()
+		LIMIT 3
+		</if>
+		<if test="isTime!=null and isTime==1">
+		 ORDER BY upc.updated_time desc
+		</if>
+		<if test="isTime!=null and isTime==2">
+		 ORDER BY upc.updated_time ASC
+		</if>
+		<if test="isReward!=null and isReward==1">
+		 ORDER BY uar.reward desc
+		</if>
+		<if test="isReward!=null and isReward==2">
+		 ORDER BY uar.reward ASC
+		</if>
+ </select>
+ 
+ <!-- 发布案例或者代写文书 -->
+ <insert id="insertUserPublishCase" parameterType="com.tz.pojo.ZaUserPublishCase">
+    insert into za_user_publish_case
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="lawId != null">
+        law_id,
+      </if>
+      <if test="awardId != null">
+        award_id,
+      </if>
+      <if test="caseId != null">
+        case_id,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="contentDesc != null">
+        content_desc,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="caseAddress != null">
+        case_address,
+      </if>
+      <if test="caseLon != null">
+        case_lon,
+      </if>
+      <if test="caseLat != null">
+        case_lat,
+      </if>
+      <if test="geoCode != null">
+        geo_code,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="createdTime != null">
+        created_time,
+      </if>
+      <if test="updatedTime != null">
+        updated_time,
+      </if>
+      <if test="endTime != null">
+        end_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="lawId != null">
+        #{lawId,jdbcType=VARCHAR},
+      </if>
+      <if test="awardId != null">
+        #{awardId,jdbcType=VARCHAR},
+      </if>
+      <if test="caseId != null">
+        #{caseId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="contentDesc != null">
+        #{contentDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="caseAddress != null">
+        #{caseAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="caseLon != null">
+        #{caseLon,jdbcType=DOUBLE},
+      </if>
+      <if test="caseLat != null">
+        #{caseLat,jdbcType=DOUBLE},
+      </if>
+      <if test="geoCode != null">
+        #{geoCode,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null">
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null">
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+ 
+<!-- 查看我的委托数据信息 -->
+<resultMap id="MyPublishCaseByIdMap" type="com.tz.pojo.index.vo.ZaUserPublishCaseVo">
+	<id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="law_id" jdbcType="VARCHAR" property="lawId" />
+    <result column="case_id" jdbcType="INTEGER" property="caseId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="content_desc" jdbcType="VARCHAR" property="contentDesc" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="case_lon" jdbcType="DOUBLE" property="caseLon" />
+    <result column="case_lat" jdbcType="DOUBLE" property="caseLat" />
+     <result column="status" jdbcType="INTEGER" property="status" />
+     <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+    
+    <result column="reward" property="reward" jdbcType="DECIMAL" />
+    <result column="case_name" jdbcType="VARCHAR" property="caseName" />
+    <result column="head_url" jdbcType="VARCHAR" property="headUrl" />
+    <result column="user_nick" jdbcType="VARCHAR" property="userNick" />
+    <result column="deadline" jdbcType="VARCHAR" property="deadline" />
+</resultMap>
+<select id="getMyPublishCaseById" resultMap="MyPublishCaseByIdMap" parameterType="java.lang.String">
+			SELECT
+			upc.id,
+			upc.user_id,
+			upc.law_id,
+			upc.status,
+			upc.type,
+			upc.title,
+			upc.content_desc,
+			upc.updated_time,
+			IF(TIMESTAMPDIFF(HOUR, NOW(), upc.end_time)>0,
+			CONCAT(TIMESTAMPDIFF(HOUR, NOW(), upc.end_time),'小时后结束'),'案件已过截止期') deadline,
+			uar.reward,
+			cc.case_name,
+			la.law_logo head_url,
+			CONCAT(
+				LEFT (la.real_name, 1),
+				'律师'
+			) user_nick
+		FROM
+			za_user_publish_case AS upc
+		INNER JOIN za_user_award_record AS uar ON upc.award_id = uar.id
+		INNER JOIN za_case_category cc ON upc.case_id = cc.id
+		LEFT JOIN za_lawyer_authentication AS la ON la.id = upc.law_id
+		WHERE
+			upc.user_id = #{userId}
+			 AND 
+             upc.`status` in(0,1,2,3,5,7)
+		ORDER BY
+			upc.updated_time DESC
+					
+</select>
+
+<!-- 律师用户查看承接的案件委托数据信息 -->
+ <select id="getPublishCaseByLawId" resultMap="MyPublishCaseByIdMap" parameterType="java.lang.String" >
+	 		SELECT
+				upc.id,
+				upc.user_id,
+			    upc.law_id,
+				upc.`status`,
+				upc.type,
+				upc.title,
+				upc.content_desc,
+				upc.updated_time,
+				IF(TIMESTAMPDIFF(HOUR, NOW(), upc.end_time)>0,
+				CONCAT(TIMESTAMPDIFF(HOUR, NOW(), upc.end_time),'小时后结束'),'案件已过截止期') deadline,
+				uar.reward,
+				cc.case_name,
+				u.head_url,
+				u.user_nick
+			FROM
+				za_user_publish_case AS upc
+			INNER JOIN za_user_award_record AS uar ON upc.award_id = uar.id
+			INNER JOIN za_case_category cc ON upc.case_id = cc.id
+			INNER JOIN za_user AS u ON u.id=upc.user_id
+			WHERE
+				upc.law_id =#{userId}
+			    AND
+			    upc.status not in(6,7)
+			ORDER BY
+				upc.updated_time DESC
+ </select>
+ 
+ <!-- 更新发布案例 -->
+ <update id="updatePublishCase" parameterType="com.tz.pojo.ZaUserPublishCase" >
+    update za_user_publish_case
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="lawId != null" >
+        law_id = #{lawId,jdbcType=VARCHAR},
+      </if>
+      <if test="awardId != null" >
+        award_id = #{awardId,jdbcType=VARCHAR},
+      </if>
+      <if test="caseId != null" >
+        case_id = #{caseId,jdbcType=INTEGER},
+      </if>
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="contentDesc != null" >
+        content_desc = #{contentDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="caseAddress != null" >
+        case_address = #{caseAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="caseLon != null" >
+        case_lon = #{caseLon,jdbcType=DOUBLE},
+      </if>
+      <if test="caseLat != null" >
+        case_lat = #{caseLat,jdbcType=DOUBLE},
+      </if>
+      <if test="geoCode != null" >
+        geo_code = #{geoCode,jdbcType=CHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+       updated_time=NOW(),
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+ 
+ <!-- 查询案例获取案例请求者和律师id-->
+ <select id="queryPublishCaseById"  resultMap="BaseResultMap" parameterType="java.lang.String">
+	SELECT
+		upc.id,
+		upc.user_id,
+		upc.law_id,
+		upc.award_id,
+		upc.`status`,
+		upc.type,
+		upc.updated_time
+	FROM
+		za_user_publish_case upc
+	WHERE
+		upc.id  = #{id}
+ </select>
+ 
+ <!-- 定时查询所有正在寻求解决中的已过期的案件 -->
+ <select id="queryPublishCaseOverdue" resultMap="BaseResultMap" parameterType="java.lang.String" >
+	 	SELECT
+			upc.id,
+			upc.user_id,
+			upc.updated_time
+		FROM
+			za_user_publish_case upc
+		WHERE
+		    upc.`status`=0
+        AND
+        TIMESTAMPDIFF(HOUR, NOW(), upc.end_time)>0
+        <if test="format != null">
+        AND upc.updated_time
+         >='${format}'
+        </if>
+ </select>
+ 
+ 
+</mapper>

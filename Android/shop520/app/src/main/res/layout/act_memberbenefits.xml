@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+                 android:orientation="vertical"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 android:background="@mipmap/login_bg">
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="80dp"
+        android:paddingBottom="@dimen/text_spacing_medium">
+
+
+<LinearLayout
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+    >
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:drawableLeft="@mipmap/member"
+        android:drawablePadding="14dp"
+        android:gravity="center"
+        android:text="会员权益1"
+        android:textColor="@color/text_orange"
+        android:textSize="@dimen/text_level_16"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:padding="@dimen/activity_vertical_margin"
+        android:textColor="@color/white"
+        android:background="@drawable/shape_transparent_white"
+        android:text="@string/member_center1"
+        android:textSize="@dimen/text_level_14"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:drawableLeft="@mipmap/member"
+        android:gravity="center"
+        android:drawablePadding="14dp"
+        android:text="会员权益2"
+        android:textColor="@color/text_orange"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:padding="@dimen/activity_vertical_margin"
+        android:textColor="@color/white"
+        android:background="@drawable/shape_transparent_white"
+        android:text="@string/member_center2"
+        android:textSize="@dimen/text_level_14"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:drawableLeft="@mipmap/member"
+        android:gravity="center"
+        android:drawablePadding="14dp"
+        android:text="会员权益3"
+        android:textColor="@color/text_orange"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="35dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="15dp"
+        android:padding="@dimen/activity_vertical_margin"
+        android:textColor="@color/white"
+        android:background="@drawable/shape_transparent_white"
+        android:text="@string/member_center3"
+        android:textSize="@dimen/text_level_14"/>
+</LinearLayout>
+    </ScrollView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:textColor="@color/white"
+        android:layout_marginLeft="40dp"
+       android:layout_above="@+id/relativelayout"
+        android:text="是否加入会员"/>
+    <RelativeLayout
+        android:id="@+id/relativelayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="35dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginBottom="@dimen/text_spacing_medium"
+        android:layout_alignParentBottom="true">
+        <TextView
+            android:id="@+id/btn_member"
+            android:layout_width="142dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:background="@drawable/shape_btn_write"
+            android:text="成为会员"
+            android:textColor="@color/black"/>
+        <TextView
+            android:id="@+id/btn_next"
+            android:layout_width="142dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:background="@drawable/shape_btn_write"
+            android:text="先逛逛"
+            android:textColor="@color/black"/>
+
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.index.vo.ZaUserCollectionMapperVo" >
+  <resultMap id="BaseResultMap" type="com.tz.pojo.ZaUserCollection" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="collection_id" property="collectionId" jdbcType="VARCHAR" />
+    <result column="ob_type" property="obType" jdbcType="INTEGER" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="queryUserCollectionById" resultType="java.lang.Integer">
+  	SELECT COUNT(*) from za_user_collection WHERE user_id=#{userId, jdbcType=VARCHAR} AND collection_id=#{id, jdbcType=VARCHAR}
+  </select>
+  
+   <insert id="insertUserCollection" parameterType="com.tz.pojo.ZaUserCollection" >
+    insert into za_user_collection
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="collectionId != null" >
+        collection_id,
+      </if>
+      <if test="obType != null" >
+        ob_type,
+      </if>
+        created_time,
+        updated_time,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="collectionId != null" >
+        #{collectionId,jdbcType=VARCHAR},
+      </if>
+      <if test="obType != null" >
+        #{obType,jdbcType=INTEGER},
+      </if>
+       NOW(),NOW(),
+    </trim>
+  </insert>
+  
+   
+   <!-- 查询用户收藏的律师 -->
+   <resultMap id="MyCollectionLawyerMap" type="com.tz.pojo.index.vo.ZaLawyerAuthenticationIndexVo">
+	   	 <id column="id" jdbcType="VARCHAR" property="id" />
+	    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+	    <result column="grade" jdbcType="VARCHAR" property="grade" />
+	    <result column="law_case" jdbcType="VARCHAR" property="lawCase" />
+	    <result column="law_office" jdbcType="VARCHAR" property="lawOffice" />
+	  	<result column="law_logo" jdbcType="VARCHAR" property="lawLogo" />
+	  	<result column="province" jdbcType="VARCHAR" property="province" />
+		<result column="city" jdbcType="VARCHAR" property="city" />
+		<result column="com_lon" jdbcType="DOUBLE" property="comLon" />
+		<result column="com_lat" jdbcType="DOUBLE" property="comLat" />
+   </resultMap>
+   <select id="getMyCollectionLawyerById" resultMap="MyCollectionLawyerMap"  parameterType="java.lang.String">
+	   		SELECT
+		au.id,
+		CONCAT(
+			LEFT (au.real_name, 1),
+			'律师'
+		) real_name,
+		au.grade,
+		au.grade,
+		au.law_case,
+		au.law_office,
+		au.law_logo,
+		au.province,
+		au.city,
+		au.com_lon,
+		au.com_lat
+	FROM
+		`za_user_collection` uc
+	INNER JOIN za_lawyer_authentication au ON uc.collection_id = au.id
+	WHERE
+		uc.ob_type = 1
+	AND uc.user_id =#{userId} 
+   </select>
+   <!-- 查询用户收藏的企业 -->
+   <resultMap id="MyCollectionComMap" type="com.tz.pojo.index.vo.ZaComAuthenticationIndexVo">
+   		<id column="id" property="id" jdbcType="VARCHAR" />
+  		<result column="com_name" property="comName" jdbcType="VARCHAR" />
+  		<result column="com_authen" property="comAuthen" jdbcType="VARCHAR" />
+  		<result column="law_ensure" property="lawEnsure" jdbcType="INTEGER" />
+  		<result column="com_logo" property="comLogo" jdbcType="VARCHAR" />
+  	 <!-- 企业经营范围 -->
+  	 <collection property="comScopeList" ofType="com.tz.pojo.ZaComCategory">
+  	    <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+  	 </collection>
+   </resultMap>
+  
+  <select id="getMyCollectionComById" resultMap="MyCollectionComMap"  parameterType="java.lang.String" >
+		  	SELECT
+			au.id,
+			au.com_logo,
+			au.com_name,
+			au.law_ensure,
+			CASE au.com_status
+		WHEN 0 THEN
+			'企业审核中'
+		WHEN 1 THEN
+			'企业认证'
+		WHEN 2 THEN
+			'企业关停'
+		END com_authen,
+		 ca.category_name
+		FROM
+			za_user_collection uc
+		INNER JOIN za_com_authentication au ON uc.collection_id = au.id
+		LEFT JOIN za_com_scope cs ON au.id = cs.com_id
+		LEFT JOIN za_com_category ca ON cs.com_category_id = ca.id
+		where uc.ob_type = 2
+		  AND  uc.user_id =#{userId}
+  </select>
+  
+  <!-- 取消收藏 -->
+    <delete id="cancelCollection" >
+    delete from za_user_collection
+    where collection_id = #{id,jdbcType=VARCHAR} 
+    AND user_id=#{userId,jdbcType=VARCHAR}
+  </delete>
+  
+</mapper>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.vo.UserPublishCaseMapperAdminVo" >
+  <resultMap id="BaseResultMap" type="com.tz.pojo.admin.ZaUserPublishCaseAdminVo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="law_id" property="lawId" jdbcType="VARCHAR" />
+    <result column="award_id" property="awardId" jdbcType="VARCHAR" />
+    <result column="case_id" property="caseId" jdbcType="INTEGER" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="content_desc" property="contentDesc" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="case_address" property="caseAddress" jdbcType="VARCHAR" />
+    <result column="case_lon" property="caseLon" jdbcType="DOUBLE" />
+    <result column="case_lat" property="caseLat" jdbcType="DOUBLE" />
+    <result column="geo_code" property="geoCode" jdbcType="CHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+    
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="law_name" property="lawName" jdbcType="VARCHAR" />
+    <result column="case_name" property="caseName" jdbcType="VARCHAR" />
+    <result column="award_status" property="awardStatus" jdbcType="VARCHAR" />
+    <result column="case_status" property="caseStatus" jdbcType="VARCHAR" />
+    <result column="gift_name" property="giftName" jdbcType="VARCHAR" />
+    <result column="case_type" property="caseType" jdbcType="VARCHAR" />
+    <result column="logo_url" property="logoUrl" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL"  />
+    <result column="reward" property="reward" jdbcType="DECIMAL"  />
+    <result column="gift_num" property="giftNum" jdbcType="INTEGER" />
+  </resultMap>
+ 
+ <!-- 查询列表 -->
+ <select id="selectUserPublishCaseList" resultMap="BaseResultMap" parameterType="java.util.Map">
+		 SELECT
+		  upc.id,
+		  u.user_account user_name,
+		  cc.case_name,	
+		  CONCAT(la.real_name,'律师') law_name,
+		  upc.title,
+		  upc.content_desc,
+		  CASE upc.status WHEN 0 THEN '付款成功未解决等待帮助中' WHEN 1 THEN  '正在解决中' WHEN 2 THEN '案件已解决' WHEN 3 THEN '用户放弃解决' WHEN 4 THEN '用户删除隐藏委托信息' WHEN 5 THEN '律师放弃解决' WHEN 6 THEN '后台强制下架'  WHEN 7 THEN '案件未支付悬赏'  END case_status,
+		  CASE upc.type WHEN 1 THEN '发布委托' WHEN 2 THEN '代写文书' END case_type,
+		  upc.updated_time,
+		  upc.end_time,
+		  uar.reward,
+		  case uar.award_status WHEN 0 THEN '赏金未支付' WHEN 1 THEN '赏金支付成功' WHEN 2 THEN '打赏取消' END award_status,
+		  g.gift_name
+		FROM
+			za_user_publish_case upc
+		INNER JOIN za_user u ON upc.user_id = u.id
+		INNER JOIN za_case_category cc ON upc.case_id = cc.id
+		LEFT JOIN za_user_award_record uar ON upc.award_id = uar.id
+		LEFT JOIN za_gift g ON g.id = uar.gift_id
+		LEFT JOIN za_lawyer_authentication la ON la.id=upc.law_id
+ 		where
+ 		  1=1
+ 		  <if test="type!=null">
+ 		  	AND upc.type = #{type,jdbcType=INTEGER}
+ 		  </if>
+ 		  <if test="status!=null">
+ 		    AND upc.status = #{status,jdbcType=INTEGER}
+ 		  </if>
+ 		 <if test="caseId!=null">
+ 		   AND upc.case_id =#{caseId,jdbcType=INTEGER}
+ 		 </if>
+ 		  <if test="userName!=null">
+ 		  	AND  u.user_account like #{userName,jdbcType=VARCHAR}
+ 		  </if>
+ 		  <if test="lawName!=null">
+ 		  	AND  la.real_name like #{lawName,jdbcType=VARCHAR}
+ 		  </if>
+ 	      <if test="geoCode!=null">
+ 	    	AND upc.geo_code like #{geoCode,jdbcType=VARCHAR}
+ 	       </if>
+ 		<if test ="startTime!= null">
+			AND  upc.updated_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+		</if>
+		    ORDER BY upc.updated_time DESC
+ 	
+ </select>
+ 
+ <!-- 查询详情 -->
+ <select id="queryUserPublishCaseById" resultMap="BaseResultMap" parameterType="java.lang.String">
+			SELECT
+		  u.user_account user_name,
+		  cc.case_name,	
+		  CONCAT(la.real_name,'律师') law_name,
+			upc.id,
+		  upc.title,
+		  upc.content_desc,
+		  upc.province,
+		  upc.city,
+		  upc.case_address,
+		  upc.case_lon,
+		  upc.case_lat,
+		  upc.geo_code,
+		  CASE upc.status WHEN 0 THEN '付款成功未解决等待帮助中' WHEN 1 THEN  '正在解决中' WHEN 2 THEN '案件已解决' WHEN 3 THEN '用户放弃解决' WHEN 4 THEN '用户删除隐藏委托信息' WHEN 5 THEN '律师放弃解决' WHEN 6 THEN '后台强制下架'WHEN 7 THEN '案件未支付悬赏'  END case_status,
+		  CASE upc.type WHEN 1 THEN '发布委托' WHEN 2 THEN '代写文书' END case_type,
+		  upc.created_time,
+		  upc.updated_time,
+		  upc.end_time,
+		  uar.price,
+		  uar.gift_num,
+		  uar.reward,
+		  case uar.award_status WHEN 0 THEN '赏金未支付' WHEN 1 THEN '赏金支付成功' WHEN 2 THEN '打赏取消' END,
+		  g.gift_name,
+		  g.logo_url
+		  
+		FROM
+			za_user_publish_case upc
+		INNER JOIN za_user u ON upc.user_id = u.id
+		INNER JOIN za_case_category cc ON upc.case_id = cc.id
+		LEFT JOIN za_user_award_record uar ON upc.award_id = uar.id
+		LEFT JOIN za_gift g ON g.id = uar.gift_id
+		LEFT JOIN za_lawyer_authentication la ON la.id=upc.law_id	
+		  where  	
+		    	upc.id=#{id,jdbcType=VARCHAR}
+ </select>
+ 
+ <!-- 检测案件id是否存在 -->
+ <select id="checkUserPublishCaseById" resultType="java.lang.Integer" parameterType="java.lang.String">
+ 	SELECT COUNT(0) FROM `za_user_publish_case` WHERE id=#{id,jdbcType=VARCHAR};
+ </select>
+ 
+ <!-- 删除案件 -->
+ <delete id="delUserPublishCase" parameterType="java.lang.String">
+   <if test="id!=null">
+ 	 DELETE from za_user_publish_case WHERE id=#{id,jdbcType=VARCHAR}
+   </if>
+ </delete>
+ 
+ <!-- 后台强制下架案件 -->
+ <update id="downUserPublishCase" parameterType="java.lang.String">
+    <if test="id!=null">
+ 	UPDATE za_user_publish_case SET `status`=6 WHERE id=#{id,jdbcType=VARCHAR}
+    </if>
+ </update>
+ 
+ <!-- 获取所有的案件类型信息 生成类型树 -->
+ <resultMap type="com.tz.pojo.ZaCaseCategory" id="caseCategoryListMap">
+ 	 <id column="id" property="id" jdbcType="INTEGER" />
+     <result column="p_id" property="pId" jdbcType="INTEGER" />
+     <result column="case_name" property="caseName" jdbcType="VARCHAR" />
+ </resultMap>
+ <select id="getCaseCategoryList" resultMap="caseCategoryListMap" parameterType="java.lang.Integer">
+ 	SELECT id,p_id,case_name from za_case_category 
+ 	<if test="status!=null">
+	 	WHERE case_status=#{status,jdbcType=INTEGER}
+ 	</if>
+ </select>
+ 
+ 
+ 
+ 
+</mapper>

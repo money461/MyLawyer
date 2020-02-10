@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/context"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_vertical_margin">
+
+            <TextView
+                android:id="@+id/address_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="张三"/>
+
+            <TextView
+                android:id="@+id/address_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="178930"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/address_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            android:text="四川省成都市"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_vertical_margin">
+            <RelativeLayout
+                android:id="@+id/rl_isdefaul"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/iv_isdefaul"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/ic_uncheck"/>
+
+            <TextView
+                android:id="@+id/address_isdefaul"
+                android:layout_toRightOf="@+id/iv_isdefaul"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="默认地址"/>
+</RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/address_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_vertical_margin"
+                android:layout_toLeftOf="@+id/address_delect"
+                android:drawableLeft="@mipmap/edit"
+                android:text="编辑"/>
+
+            <TextView
+                android:id="@+id/address_delect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:drawableLeft="@mipmap/delect"
+                android:text="删除"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+    <TextView
+        android:layout_below="@+id/context"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/base_gray"/>
+</RelativeLayout>

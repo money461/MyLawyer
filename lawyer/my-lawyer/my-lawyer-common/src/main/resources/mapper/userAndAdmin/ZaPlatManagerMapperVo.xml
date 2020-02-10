@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.vo.ZaPlatManagerMapperVo" >
+  <resultMap id="BaseResultMap" type="com.tz.pojo.vo.ZaPlatManagerVo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="manager_name" property="managerName" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="CHAR" />
+    <result column="age" property="age" jdbcType="INTEGER" />
+    <result column="manager_phone" property="managerPhone" jdbcType="VARCHAR" />
+    <result column="manager_account" property="managerAccount" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="manager_password" property="managerPassword" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="last_login" property="lastLogin" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    
+    
+       <!-- 多个角色名称 -->
+    <collection  property="roleList" ofType="com.tz.pojo.ZaPlatRole">
+        <result column="role_id" property="id" jdbcType="VARCHAR" />
+    	<result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+    </collection>
+    
+  </resultMap>
+  
+  <!-- 插入管理员 -->
+  <insert id="insertSelective" parameterType="com.tz.pojo.ZaPlatManager" >
+    insert into za_plat_manager
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="managerName != null" >
+        manager_name,
+      </if>
+      <if test="gender != null" >
+        gender,
+      </if>
+      <if test="age != null" >
+        age,
+      </if>
+      <if test="managerPhone != null" >
+        manager_phone,
+      </if>
+      <if test="managerAccount != null" >
+        manager_account,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="managerPassword != null" >
+        manager_password,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="lastLogin != null" >
+        last_login,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="updatedTime != null" >
+        updated_time,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="managerName != null" >
+        #{managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=CHAR},
+      </if>
+      <if test="age != null" >
+        #{age,jdbcType=INTEGER},
+      </if>
+      <if test="managerPhone != null" >
+        #{managerPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="managerAccount != null" >
+        #{managerAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="managerPassword != null" >
+        #{managerPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLogin != null" >
+        #{lastLogin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 校验注册的账号是否已存在 -->
+  <select id="checkPlatManagerAccount" parameterType="java.lang.String" resultType="java.lang.Integer" >
+    select count(*) from za_plat_manager
+    <if test="managerAccount != null" >
+     	where manager_account=#{managerAccount}
+    </if>
+  </select>
+  
+  <!-- 查询管理员列表信息 -->
+  <select id="selectPlatManagerList" resultMap="BaseResultMap" parameterType="java.util.Map">
+		  SELECT
+				m.id,
+				m.manager_account,
+				m.manager_phone,
+				m.manager_name,
+				m.gender,
+				m.age,
+				m.email,
+				m.status,
+				m.last_login,
+				m.updated_time,
+				pr.id role_id,
+                pr.role_name
+			FROM
+				za_plat_manager m
+        LEFT JOIN za_plat_manager_role pmr ON m.id=pmr.manager_id
+        LEFT JOIN za_plat_role pr ON pmr.role_id=pr.id
+		WHERE
+		   1=1
+		   <if test="status!=null">
+		    AND m.status = #{status}
+		   </if>
+		   <if test="name!=null">
+		   AND m.manager_account LIKE #{name}
+		   </if>
+		   <if test="phone!=null">
+		   AND m.manager_phone LIKE #{phone}
+		   </if>
+		   <if test ="startTime!= null">
+		   AND  m.updated_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+		   </if>
+  		       ORDER BY m.updated_time DESC
+  </select>
+  
+  <!-- 根据id查询管理员数据 -->
+  <resultMap type="com.tz.pojo.vo.ZaPlatManagerVo" id="queryPlatManagerByIdMap">
+  	<id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="manager_name" property="managerName" jdbcType="VARCHAR" />
+    <result column="gender" property="gender" jdbcType="CHAR" />
+    <result column="age" property="age" jdbcType="INTEGER" />
+    <result column="manager_phone" property="managerPhone" jdbcType="VARCHAR" />
+    <result column="manager_account" property="managerAccount" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="manager_password" property="managerPassword" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    
+    <collection property="ListId" ofType="java.lang.String">
+    	<result column="role_id"  property="string" jdbcType="VARCHAR" />
+    </collection>
+  </resultMap>
+  <select id="queryPlatManagerById" resultMap="queryPlatManagerByIdMap" parameterType="java.lang.String">
+			SELECT
+				pm.id,
+				pm.manager_name,
+				pm.gender,
+				pm.age,
+				pm.manager_phone,
+				pm.manager_account,
+				pm.email,
+				pm.status,
+			    pmr.role_id
+			FROM
+				za_plat_manager pm
+			LEFT JOIN 
+			   za_plat_manager_role pmr
+			ON pm.id=pmr.manager_id
+			WHERE
+				pm.id =#{id}
+  </select>
+  
+  <!-- 更新管理员信息 -->
+  
+  <update id="updateSelectiveById" parameterType="com.tz.pojo.ZaPlatManager" >
+    update za_plat_manager
+    <set >
+      <if test="managerName != null" >
+        manager_name = #{managerName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=CHAR},
+      </if>
+      <if test="age != null" >
+        age = #{age,jdbcType=INTEGER},
+      </if>
+      <if test="managerPhone != null" >
+        manager_phone = #{managerPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="managerAccount != null" >
+        manager_account = #{managerAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="managerPassword != null" >
+        manager_password = #{managerPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLogin != null" >
+        last_login = #{lastLogin,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+ 
+ <!-- 删除管理员 -->
+ <delete id="deletePlatManagerById" parameterType="java.lang.String">
+ 	DELETE FROM za_plat_manager WHERE id=#{id}
+ </delete>
+ 
+ 
+ 
+</mapper>

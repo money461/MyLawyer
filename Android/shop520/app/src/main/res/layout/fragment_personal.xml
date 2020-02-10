@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:background="@color/base_gray_shape"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="174dp"
+        android:background="@mipmap/personal_head_bg">
+
+        <com.tianzhi.shop520.ui.diyview.BaseImageView
+            android:id="@+id/iv_head"
+            android:layout_width="76.0dip"
+            android:layout_height="76.0dip"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="26dp"
+            android:src="@drawable/user_default"/>
+
+        <TextView
+            android:id="@+id/personal_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/text_spacing_medium"
+            android:background="@mipmap/personal_setting_head"/>
+        <TextView
+            android:id="@+id/tv_login"
+            android:layout_width="match_parent"
+            android:layout_height="76dip"
+            android:textColor="@color/white"
+            android:layout_toRightOf="@+id/iv_head"
+            android:layout_alignTop="@+id/iv_head"
+            android:layout_marginLeft="35dp"
+            android:gravity="center_vertical"
+            android:text="登录/注册"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_user_info"
+            android:layout_width="match_parent"
+            android:layout_height="76dip"
+            android:orientation="vertical"
+            android:layout_toRightOf="@+id/iv_head"
+            android:layout_alignTop="@+id/iv_head"
+            android:layout_marginLeft="35dp"
+            android:gravity="center_vertical"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/personal_name"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:text=""
+                android:textSize="@dimen/text_level_16"
+                android:textColor="@color/white"/>
+            <TextView
+                android:id="@+id/tv_vip_type"
+                android:layout_width="90dp"
+                android:layout_height="18dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:layout_toRightOf="@+id/personal_name"
+                android:layout_marginLeft="@dimen/text_spacing_medium"
+                android:background="@drawable/shape_text_orage"
+                android:textColor="@color/text_orange"
+                android:textSize="@dimen/text_level_11"
+                android:gravity="center"
+                android:text=""/>
+            <TextView
+                android:id="@+id/tv_loveSurplus"
+                android:layout_below="@+id/personal_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:textColor="@color/text_orange"
+                android:text=""/>
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_spacing_medium"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/tab_order"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/personal_order"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_spacing_medium"
+                android:textColor="@color/text_black"
+                android:text="我的订单"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tab_recommend"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/personal_recommend"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_spacing_medium"
+                android:textColor="@color/text_black"
+                android:text="我的推荐"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tab_address"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/persnonal_address"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_spacing_medium"
+                android:textColor="@color/text_black"
+                android:text="收货地址"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/tab_upgrade"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/personal_member_upgrade"/>
+
+            <TextView
+                android:id="@+id/text_member"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_spacing_medium"
+                android:textColor="@color/text_black"
+                android:text="会员升级"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tab_about"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/personal_about"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_spacing_medium"
+                android:textColor="@color/text_black"
+                android:text="关于我们"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tab_setting"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/personal_setting"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/text_spacing_medium"
+                android:textColor="@color/text_black"
+                android:text="设置"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

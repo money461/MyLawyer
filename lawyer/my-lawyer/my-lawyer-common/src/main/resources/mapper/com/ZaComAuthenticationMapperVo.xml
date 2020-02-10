@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.com.vo.ZaComAuthenticationMapperComVo" >
+ 
+  <resultMap id="BaseResultMap" type="com.tz.pojo.com.vo.ZaComAuthenticationComVo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="law_id" property="lawId" jdbcType="VARCHAR" />
+    <result column="com_nickname" property="comNickname" jdbcType="VARCHAR" />
+    <result column="com_name" property="comName" jdbcType="VARCHAR" />
+    <result column="com_manager" property="comManager" jdbcType="VARCHAR" />
+    <result column="com_phone" property="comPhone" jdbcType="VARCHAR" />
+    <result column="com_legal_person" property="comLegalPerson" jdbcType="VARCHAR" />
+    <result column="legal_person_phone" property="legalPersonPhone" jdbcType="VARCHAR" />
+    <result column="com_introduce" property="comIntroduce" jdbcType="VARCHAR" />
+    <result column="com_status" property="comStatus" jdbcType="INTEGER" />
+    <result column="com_address" property="comAddress" jdbcType="VARCHAR" />
+    <result column="com_logo" property="comLogo" jdbcType="VARCHAR" />
+    <result column="licence_url" property="licenceUrl" jdbcType="VARCHAR" />
+    <result column="qualification_url" property="qualificationUrl" jdbcType="VARCHAR" />
+    <result column="ID_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="examine_time" property="examineTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="examine_id" property="examineId" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+  </resultMap>
+  <!-- 获取企业基本信息 -->
+  <select id="getCompanys" resultMap="BaseResultMap" parameterType="java.util.Map">
+		  	SELECT
+			au.id,
+		  au.com_logo,
+		  au.com_name,
+		  au.com_introduce
+		FROM
+			`za_com_category` ca
+		LEFT JOIN za_com_scope cs ON ca.id = cs.com_category_id
+		LEFT JOIN za_com_authentication au ON au.id = cs.com_id
+		where
+		  au.com_status=1
+		<if test="comName!=null">
+		 AND  au.com_name LIKE #{comName}
+		</if>
+		<if test="comCategoryName!=null">
+		  AND ca.category_name LIKE #{comCategoryName}
+		</if>
+		<if test="categoryId!=null">
+		 AND ca.id=#{categoryId}
+		</if>
+		<choose>
+		<when test="comName==null and comCategoryName==null and categoryId==null ">
+		  ORDER BY RAND() LIMIT 10
+		</when>
+		<otherwise>
+		  ORDER BY au.updated_time DESC 
+		</otherwise>
+		</choose>
+	
+  </select>
+  <!-- 判断用户是否已收藏了该企业 -->
+  <select id="queryUserCollectionById" resultType="java.lang.Integer">
+  	SELECT COUNT(*) from za_user_collection WHERE user_id=#{userId, jdbcType=VARCHAR} AND collection_id=#{id, jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 查询企业详情 -->
+  <resultMap type="com.tz.pojo.com.vo.ComAuthenDetailInfo" id="CompanyDetailMap">
+  		<id column="id" property="id" jdbcType="VARCHAR" />
+  		<result column="com_name" property="comName" jdbcType="VARCHAR" />
+  		<result column="com_introduce" property="comIntroduce" jdbcType="VARCHAR" />
+  		<result column="com_authen" property="comAuthen" jdbcType="VARCHAR" />
+  		<result column="law_ensure" property="lawEnsure" jdbcType="INTEGER" />
+  		<result column="com_logo" property="comLogo" jdbcType="VARCHAR" />
+  		<result column="licence_url" property="licenceUrl" jdbcType="VARCHAR" />
+  		<result column="qualification_url" property="qualificationUrl" jdbcType="VARCHAR" />
+  
+  	 <!-- 企业经营范围 -->
+  	 <collection property="comScopeList" ofType="com.tz.pojo.ZaComCategory">
+  	    <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+  	 </collection>
+  </resultMap>
+  <select id="getCompanyDetailInfo" resultMap="CompanyDetailMap" parameterType="java.lang.String">
+		  	SELECT
+			au.id,
+		  au.com_logo,
+		  au.com_name,
+		  au.com_introduce,
+		  ISNULL(au.law_id) law_ensure,
+		  CASE au.com_status
+							WHEN 0 THEN
+							'企业审核中'
+							WHEN 1 THEN
+							'企业认证'
+							WHEN 2 THEN
+							'企业关停'
+							END com_authen,
+		au.licence_url,
+		au.qualification_url,
+		 ca.category_name
+		FROM
+			za_com_authentication au 
+		LEFT JOIN za_com_scope cs ON au.id = cs.com_id
+		LEFT JOIN  za_com_category ca ON cs.com_category_id = ca.id
+		where
+		 au.id=#{id}
+  </select>
+  
+  
+</mapper>

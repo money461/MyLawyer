@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.index.vo.ZaUserPurchaseRecordMapperVo" >
+  <resultMap id="BaseResultMap" type="com.tz.pojo.ZaUserPurchaseRecord" >
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="user_type" property="userType" jdbcType="INTEGER" />
+    <result column="deal_code" property="dealCode" jdbcType="VARCHAR" />
+    <result column="pay_cash" property="payCash" jdbcType="DECIMAL" />
+    <result column="pay_type" property="payType" jdbcType="INTEGER" />
+    <result column="pay_status" property="payStatus" jdbcType="INTEGER" />
+    <result column="consum_type" property="consumType" jdbcType="INTEGER" />
+    <result column="in_out" property="inOut" jdbcType="INTEGER" />
+    <result column="event_desc" property="eventDesc" jdbcType="VARCHAR" />
+    <result column="user_account" property="userAccount" jdbcType="VARCHAR" />
+    <result column="payee_real_name" property="payeeRealName" jdbcType="VARCHAR" />
+    <result column="consum_time" property="consumTime" jdbcType="TIMESTAMP" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <insert id="insertUserPurchaseRecord" parameterType="com.tz.pojo.ZaUserPurchaseRecord" >
+    insert into za_user_purchase_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userType != null" >
+        user_type,
+      </if>
+      <if test="dealCode != null" >
+        deal_code,
+      </if>
+      <if test="payCash != null" >
+        pay_cash,
+      </if>
+      <if test="payType != null" >
+        pay_type,
+      </if>
+      <if test="payStatus != null" >
+        pay_status,
+      </if>
+      <if test="consumType != null" >
+        consum_type,
+      </if>
+      <if test="inOut != null" >
+        in_out,
+      </if>
+      <if test="eventDesc != null" >
+        event_desc,
+      </if>
+      <if test="userAccount != null" >
+        user_account,
+      </if>
+      <if test="payeeRealName != null" >
+        payee_real_name,
+      </if>
+      <if test="consumTime != null" >
+        consum_time,
+      </if>
+        created_time,
+        updated_time,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null" >
+        #{userType,jdbcType=INTEGER},
+      </if>
+      <if test="dealCode != null" >
+        #{dealCode,jdbcType=VARCHAR},
+      </if>
+      <if test="payCash != null" >
+        #{payCash,jdbcType=DECIMAL},
+      </if>
+      <if test="payType != null" >
+        #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="payStatus != null" >
+        #{payStatus,jdbcType=INTEGER},
+      </if>
+      <if test="consumType != null" >
+        #{consumType,jdbcType=INTEGER},
+      </if>
+      <if test="inOut != null" >
+        #{inOut,jdbcType=INTEGER},
+      </if>
+      <if test="eventDesc != null" >
+        #{eventDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="userAccount != null" >
+        #{userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="payeeRealName != null" >
+        #{payeeRealName,jdbcType=VARCHAR},
+      </if>
+      <if test="consumTime != null" >
+        #{consumTime,jdbcType=TIMESTAMP},
+      </if>
+      NOW(),NOW(),
+    </trim>
+  </insert>
+  
+</mapper>

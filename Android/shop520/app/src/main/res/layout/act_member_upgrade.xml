@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+    android:background="@color/base_gray">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dp"
+        android:scrollbars="none">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            android:drawableLeft="@mipmap/member"
+            android:drawablePadding="14dp"
+            android:gravity="center"
+            android:text="会员权益1"
+            android:textColor="@color/text_orange"
+            android:textSize="@dimen/text_level_16"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@color/white"
+            android:padding="@dimen/text_spacing_large"
+            android:text="@string/member_center1"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/text_level_14"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:drawableLeft="@mipmap/member"
+            android:gravity="center"
+            android:drawablePadding="14dp"
+            android:text="会员权益2"
+            android:textColor="@color/text_orange"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@color/white"
+            android:padding="@dimen/text_spacing_large"
+            android:text="@string/member_center2"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/text_level_14"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:drawableLeft="@mipmap/member"
+            android:gravity="center"
+            android:drawablePadding="14dp"
+            android:text="会员权益3"
+            android:textColor="@color/text_orange"/>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:background="@color/white"
+            android:padding="@dimen/text_spacing_large"
+            android:text="@string/member_center3"
+            android:textColor="@color/text_black"
+            android:textSize="@dimen/text_level_14"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:text="选择套餐并支付后即可加入会员，享受会员权益"/>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/member_pag_rcl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/to_pay"
+        android:background="@drawable/shape_btn_black"
+        android:layout_width="230dp"
+        android:layout_height="35dp"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        android:text="去支付"/>
+</RelativeLayout>

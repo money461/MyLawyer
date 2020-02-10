@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="vertical"
+    android:background="@color/base_gray">
+<!--
+    <RadioGroup
+        android:id="@+id/rg_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="12dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_tab1"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1.0"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:drawableTop="@mipmap/pag_icon1"
+            android:text="友情套餐"
+            android:drawablePadding="@dimen/text_spacing_medium"
+            android:textColor="@drawable/tabs_radio_material"/>
+
+        <RadioButton
+            android:id="@+id/rb_tab2"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1.0"
+            android:button="@null"
+            android:gravity="center"
+            android:text="亲情套餐"
+            android:drawablePadding="@dimen/text_spacing_medium"
+            android:drawableTop="@mipmap/pag_icon2"
+            android:textColor="@drawable/tabs_radio_material"/>
+        <RadioButton
+            android:id="@+id/rb_tab3"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1.0"
+            android:button="@null"
+            android:gravity="center"
+            android:text="爱情套餐"
+            android:drawablePadding="@dimen/text_spacing_medium"
+            android:drawableTop="@mipmap/pag_icon3"
+            android:textColor="@drawable/tabs_radio_material"/>
+        <RadioButton
+            android:id="@+id/rb_tab4"
+            android:layout_width="0.0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1.0"
+            android:button="@null"
+            android:gravity="center"
+            android:text="同事套餐"
+            android:drawablePadding="@dimen/text_spacing_medium"
+            android:drawableTop="@mipmap/pag_icon4"
+            android:textColor="@drawable/tabs_radio_material"/>
+    </RadioGroup>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_level_14"
+        android:textColor="@color/text_black"
+        android:text="当前 | 全部套餐"
+        android:padding="@dimen/text_spacing_medium"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pagviewpager"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"/>-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/text_level_14"
+        android:textColor="@color/text_black"
+        android:text="当前 | 全部套餐"
+        android:padding="@dimen/text_spacing_medium"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/pag_rlv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/base_gray">
+
+    </android.support.v7.widget.RecyclerView>
+</LinearLayout>

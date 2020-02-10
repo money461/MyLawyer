@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@mipmap/login_bg"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="61dp"
+        android:layout_height="61dp"
+        android:background="@mipmap/logo"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="45dp"/>
+
+        <EditText
+            android:id="@+id/et_account"
+            android:layout_width="242.0dip"
+            android:layout_height="41dp"
+            android:layout_marginTop="52dp"
+            android:layout_gravity="center_horizontal"
+            android:drawablePadding="@dimen/activity_vertical_margin"
+            android:background="@drawable/shape_stroke_white"
+            android:drawableLeft="@mipmap/account"
+            android:hint="请输入手机号"
+            android:maxEms="11"
+            android:maxLength="11"
+            android:drawableRight="@mipmap/white_down"
+            android:inputType="phone"
+            android:padding="@dimen/text_spacing_medium"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="@dimen/text_level_15"/>
+
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="242.0dip"
+            android:layout_height="41dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_centerVertical="true"
+            android:background="@drawable/shape_stroke_white"
+            android:drawableLeft="@mipmap/password"
+            android:drawablePadding="@dimen/activity_vertical_margin"
+            android:hint="请输入密码"
+            android:textColor="@color/white"
+            android:inputType="textPassword"
+            android:padding="@dimen/text_spacing_medium"
+            android:textColorHint="@color/white"
+            android:textSize="@dimen/text_level_15"/>
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="242dp"
+        android:layout_height="41dp"
+        android:layout_marginTop="70dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/shape_btn_write"
+        android:text="登   录"
+        android:textColor="@color/base_black"
+        android:textSize="@dimen/text_level_18"/>
+
+    <RelativeLayout
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/tv_forgetpassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/text_spacing_medium"
+            android:text="忘记密码？"
+            android:textColor="@color/white"/>
+
+        <TextView
+            android:id="@+id/btn_regist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/text_spacing_medium"
+            android:text="注册"
+            android:textColor="@color/white"/>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

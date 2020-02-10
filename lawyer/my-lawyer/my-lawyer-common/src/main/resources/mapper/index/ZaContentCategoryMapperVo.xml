@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tz.mapper.index.vo.ZaContentCategoryMapperVo">
+  <resultMap id="BaseResultMap" type="com.tz.pojo.index.vo.ZaContentCategoryVo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="p_id" jdbcType="INTEGER" property="pId" />
+    <result column="sort_code" jdbcType="INTEGER" property="sortCode" />
+    <result column="category_name" jdbcType="VARCHAR" property="categoryName" />
+    <result column="annotate" jdbcType="VARCHAR" property="annotate" />
+    <result column="logo_url" jdbcType="VARCHAR" property="logoUrl" />
+    <result column="link_address" jdbcType="VARCHAR" property="linkAddress" />
+    <result column="category_status" jdbcType="INTEGER" property="categoryStatus" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+  </resultMap>
+ 	
+ 	<!-- 查询主页选择模块 -->
+ 	<select id="getSelectionModel" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+			 SELECT
+			    sort_code,
+				category_name,
+				annotate,
+				logo_url
+			FROM
+				`za_content_category`
+			WHERE
+			  sort_code
+			    <if test="userType!=null and userType==1 or userType==3">
+			   	 IN (2, 3, 4)	
+			    </if>
+			    <if test="userType!=null and userType==2">
+			     IN (5,6)
+			    </if>
+			AND 
+			     category_status = 1
+			ORDER BY
+				sort_code;
+ 	</select>
+ 	
+ 	<!-- 查询主页轮播图以及广告资讯内容 -->
+ 	<resultMap id="getIndexContentMap" type="com.tz.pojo.index.vo.IndexContentVo">
+ 	   <id column="content_category_id" jdbcType="VARCHAR" property="contentCategoryId" />
+ 	   <result column="category_name" jdbcType="VARCHAR" property="contentCategoryName" />
+ 	   <result column="sort_code" jdbcType="VARCHAR" property="sortCode" />
+ 	 <collection property="contentList" ofType="com.tz.pojo.index.vo.ZaContentVo">
+	    <result column="title" property="title" jdbcType="VARCHAR" />
+	    <result column="content_title" property="contentTitle" jdbcType="VARCHAR" />
+	    <result column="link_url" property="linkUrl" jdbcType="VARCHAR" />
+	    <result column="homepage_url" property="homepageUrl" jdbcType="VARCHAR" />
+	    <result column="pricture_url" property="prictureUrl" jdbcType="VARCHAR" />
+	    <result column="content_desc" property="contentDesc" jdbcType="VARCHAR" />
+	    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+ 	 </collection>
+ 	</resultMap>
+ 	
+	<select id="getIndexContent" resultMap="getIndexContentMap" parameterType="java.lang.Integer">
+			SELECT
+			ca.category_name,
+			ca.sort_code,
+			c.content_category_id,
+			c.title,
+			c.content_title,
+			c.content_desc,
+			c.homepage_url,
+			c.pricture_url,
+			c.link_url,
+			c.created_time
+			FROM
+			za_content_category ca
+			INNER JOIN za_content c ON ca.id = c.content_category_id
+			WHERE
+			ca.category_status = 1
+			AND ca.sort_code 
+			<if test="userType!=null and userType==1">
+				IN (10, 12)
+			</if>
+			<if test="userType!=null and userType==2">
+				IN (10, 13)
+			</if>
+			<if test="userType!=null and userType==3">
+				IN (10, 14)
+			</if>
+			ORDER BY
+			c.sort
+ 	</select>
+ 	
+ 	<!-- 获取个人设置中心图标信息 -->
+	 <select id="getPersonalCenter" resultMap="getIndexContentMap" parameterType="java.lang.Integer">
+				SELECT
+				ca.category_name,
+				ca.sort_code,
+				cn.content_category_id,
+				cn.title,
+				cn.homepage_url,
+				cn.link_url
+				FROM
+				`za_content_category` ca
+				INNER JOIN za_content cn ON ca.id = cn.content_category_id
+				WHERE
+				ca.category_status = 1
+				<choose>
+				  <when test="userType!=null and userType==1">
+						AND ca.sort_code = 16
+				</when>
+				<when test="userType!=null and userType==2">
+						AND ca.sort_code = 17
+				</when>
+				<when test="userType!=null and userType==3">
+						AND ca.sort_code = 18
+				</when>
+				</choose>
+				ORDER BY
+				sort ASC
+ 	</select>
+ 	
+</mapper>

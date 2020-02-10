@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.vo.ZaComCategoryMapperVo">
+	<resultMap id="selectComCategoryAndChSonListMap" type="com.tz.pojo.vo.ZaComCategoryVo">
+	    <id column="id" property="id" jdbcType="INTEGER" />
+	    <result column="p_id" property="pId" jdbcType="INTEGER" />
+	    <result column="sort_code" property="sortCode" jdbcType="INTEGER" />
+	    <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+	    <result column="logo_url" property="logoUrl" jdbcType="VARCHAR" />
+	    <result column="link_address" property="linkAddress" jdbcType="VARCHAR" />
+	    <result column="category_status" property="categoryStatus" jdbcType="INTEGER" />
+	    <result column="operator" property="operator" jdbcType="VARCHAR" />
+	    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+	    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+		<collection property="zaComCategorys" ofType="com.tz.pojo.ZaComCategory">
+			<id column="ch_id" property="id" jdbcType="INTEGER" />
+			<result column="ch_case_name" property="categoryName" jdbcType="VARCHAR" />
+		</collection>
+	</resultMap>
+	<!-- 查询企业经营类型二级分类 -->
+	<select id="selectComCategoryAndChSonList" resultMap="selectComCategoryAndChSonListMap"
+		parameterType="java.util.HashMap">
+		SELECT
+		zcc.id,
+		zcc.p_id,
+		zcc.sort_code,
+		zcc.category_name,
+		zcc.logo_url,
+		zcc.link_address,
+		zcc.category_status,
+		zcc.operator,
+		zcc.created_time,
+		zcc.updated_time,
+		zcc2.id AS ch_id,
+		zcc2.category_name AS ch_case_name
+		FROM
+		za_com_category zcc
+		LEFT JOIN za_com_category zcc2 ON zcc.id =
+		zcc2.p_id
+		WHERE
+		zcc.p_id = 0
+		<if test="caseName!= null">
+			AND zcc.category_name LIKE #{caseName,jdbcType=VARCHAR}
+		</if>
+		<if test="startTime!= null">
+			AND zcc.created_time between
+			#{startTime,jdbcType=TIMESTAMP} and
+			#{endTime,jdbcType=TIMESTAMP}
+		</if>
+		ORDER BY
+		zcc.created_time DESC
+	</select>
+</mapper>

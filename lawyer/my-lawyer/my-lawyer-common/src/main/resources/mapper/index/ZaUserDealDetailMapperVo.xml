@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.index.vo.ZaUserDealDetailMapperVo" >
+  <resultMap id="BaseResultMap" type="com.tz.pojo.index.vo.DealDetail" >
+    <result column="deal_code" property="dealCode" jdbcType="VARCHAR" />
+    <result column="event_desc" property="eventDesc" jdbcType="VARCHAR" />
+    <result column="money" property="money" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+ 
+ <!-- 获取交易流水记录 -->
+  <select id="getUserDealDetailById"  resultMap="BaseResultMap" parameterType="java.lang.String">
+		 SELECT
+			created_time,
+		  deal_code,
+			event_desc,
+					CASE in_out
+			WHEN 1 THEN
+				CONCAT('-', pay_cash,'元')
+			WHEN 0 THEN
+				CONCAT('+', pay_cash,'元')
+      ELSE
+       CONCAT(pay_cash,'元')
+			END money
+		FROM
+			za_user_purchase_record
+		WHERE
+			user_id =#{userId}
+		UNION ALL
+			SELECT
+				created_time,
+		    deal_code,
+				event_desc,
+				CASE in_out
+			WHEN 1 THEN
+				CONCAT('-', in_cash,'元')
+			WHEN 0 THEN
+				CONCAT('+', in_cash,'元')
+      ELSE
+       CONCAT(in_cash,'元')
+			END money
+			FROM
+				za_user_income_record
+			WHERE
+				user_id =#{userId}
+			ORDER BY
+				created_time DESC
+  </select>
+ 
+</mapper>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.vo.ContentCategoryMapperAdminVo" >
+  <resultMap id="BaseResultMap" type="com.tz.pojo.admin.ZaContentCategoryAdminVo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="p_id" property="pId" jdbcType="INTEGER" />
+    <result column="sort_code" property="sortCode" jdbcType="INTEGER" />
+    <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+    <result column="annotate" property="annotate" jdbcType="VARCHAR" />
+    <result column="logo_url" property="logoUrl" jdbcType="VARCHAR" />
+    <result column="link_address" property="linkAddress" jdbcType="VARCHAR" />
+    <result column="category_status" property="categoryStatus" jdbcType="INTEGER" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+ 
+ <!-- 查询广告分类列表信息 -->
+ <select id="selectContentCategoryList" resultMap="BaseResultMap" parameterType="java.util.Map">
+			 SELECT
+			  cc.id,
+			  cc.sort_code,
+			  cc.category_name,
+			  cc.annotate,
+			  cc.logo_url,
+			  cc.link_address,
+			  cc.category_status,
+			  cc.updated_time,
+			  cc.operator
+			FROM
+				`za_content_category` cc
+			WHERE
+				cc.p_id = #{pId}
+			<if test="status!=null">
+		    AND cc.status = #{status}
+		   </if>
+		   <if test="name!=null">
+		   AND cc.category_name LIKE #{name}
+		   </if>
+		   <if test ="startTime!= null">
+		   AND cc.updated_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+		   </if>
+			  ORDER BY cc.updated_time DESC
+ </select>
+ 
+ <!-- 校验code是否存在 -->
+ <select id="checkContentCategorySortCode" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+   SELECT COUNT(*) FROM `za_content_category` where sort_code=#{sortCode};
+ </select>
+ 
+  <insert id="insertContentCategorySelective" parameterType="com.tz.pojo.ZaContentCategory" >
+    insert into za_content_category
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="pId != null" >
+        p_id,
+      </if>
+      <if test="sortCode != null" >
+        sort_code,
+      </if>
+      <if test="categoryName != null" >
+        category_name,
+      </if>
+      <if test="annotate != null" >
+        annotate,
+      </if>
+      <if test="logoUrl != null" >
+        logo_url,
+      </if>
+      <if test="linkAddress != null" >
+        link_address,
+      </if>
+      <if test="categoryStatus != null" >
+        category_status,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="updatedTime != null" >
+        updated_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pId != null" >
+        #{pId,jdbcType=INTEGER},
+      </if>
+      <if test="sortCode != null" >
+        #{sortCode,jdbcType=INTEGER},
+      </if>
+      <if test="categoryName != null" >
+        #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="annotate != null" >
+        #{annotate,jdbcType=VARCHAR},
+      </if>
+      <if test="logoUrl != null" >
+        #{logoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="linkAddress != null" >
+        #{linkAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryStatus != null" >
+        #{categoryStatus,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateContentCategorySelectvice" parameterType="com.tz.pojo.ZaContentCategory" >
+    update za_content_category
+    <set >
+      <if test="pId != null" >
+        p_id = #{pId,jdbcType=INTEGER},
+      </if>
+      <if test="sortCode != null" >
+        sort_code = #{sortCode,jdbcType=INTEGER},
+      </if>
+      <if test="categoryName != null" >
+        category_name = #{categoryName,jdbcType=VARCHAR},
+      </if>
+      <if test="annotate != null" >
+        annotate = #{annotate,jdbcType=VARCHAR},
+      </if>
+      <if test="logoUrl != null" >
+        logo_url = #{logoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="linkAddress != null" >
+        link_address = #{linkAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryStatus != null" >
+        category_status = #{categoryStatus,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 根据id查询内容分类 -->
+  <select id="queryContentCategoryById" resultMap="BaseResultMap" parameterType="java.lang.Integer"> 
+		  	SELECT
+			id,
+		  p_id,
+		  sort_code,
+		  category_name,
+		  annotate,
+		  logo_url,
+		  link_address,
+		  category_status
+		FROM
+			`za_content_category`
+		WHERE
+			id =#{id}
+  </select>
+  
+  <!-- 删除内容分类 -->
+  <delete id="delContentCategoryById" parameterType="java.lang.Integer" >
+  	DELETE from za_content_category WHERE id=#{id}
+  </delete>
+  
+  <!-- 查询所有分类信息 -->
+  <select id="selectAllContentCategory" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		  	SELECT
+			id,
+			p_id,
+			category_name
+		FROM
+			`za_content_category`
+		<if test="status!=null">
+		WHERE
+			category_status =#{status};
+		</if>
+  </select>
+  
+</mapper>

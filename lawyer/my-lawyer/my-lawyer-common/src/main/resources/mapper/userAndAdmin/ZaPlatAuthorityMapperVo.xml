@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.vo.ZaPlatAuthorityMapperVo" >
+  <resultMap id="BaseResultMap" type="com.tz.pojo.ZaPlatAuthority" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="p_id" property="pId" jdbcType="VARCHAR" />
+    <result column="authority_name" property="authorityName" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="priority" property="priority" jdbcType="INTEGER" />
+    <result column="module" property="module" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+  </resultMap>
+ <!-- 校验code是否重复 -->
+ <select id="checkPlatAuthorityByCode" resultType="java.lang.Integer" parameterType="java.lang.String">
+ 	SELECT count(*) FROM za_plat_authority where `code`=#{code}
+ </select>
+ 
+ <!-- 查询所有权限信息 -->
+ <select id="selectPlatAuthUsable" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+ 	SELECT id,p_id, authority_name,status FROM za_plat_authority 
+ 	<if test="status!=null">
+	 	where status=#{status}
+ 	</if>
+ </select>
+ 
+ <!--查询权限子节点  -->
+ <select id="querySonAuthorityByPid" resultMap="BaseResultMap" parameterType="java.lang.String">
+ 	SELECT id,p_id, authority_name FROM za_plat_authority where p_id=#{id}
+ </select>
+  
+ <!-- 查询权限信息 -->
+ <select id="queryAuthorityById" resultMap="BaseResultMap" parameterType="java.lang.String">
+ 	SELECT id,p_id, authority_name,code,description,priority,module,status FROM za_plat_authority where id=#{id}
+ </select>
+  
+  <!-- 删除权限 -->
+  <delete id="delPlatAuthorityById" parameterType="java.lang.String">
+  	DELETE from za_plat_authority WHERE id=#{id}
+  </delete>
+  
+  <insert id="insertPlatAuthSelective" parameterType="com.tz.pojo.ZaPlatAuthority" >
+    insert into za_plat_authority
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="pId != null" >
+        p_id,
+      </if>
+      <if test="authorityName != null" >
+        authority_name,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="priority != null" >
+        priority,
+      </if>
+      <if test="module != null" >
+        module,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="updatedTime != null" >
+        updated_time,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="pId != null" >
+        #{pId,jdbcType=VARCHAR},
+      </if>
+      <if test="authorityName != null" >
+        #{authorityName,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null" >
+        #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="module != null" >
+        #{module,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  
+  <!-- 权限列表查询 -->
+  <select id="selectPlatAuthorityList" resultMap="BaseResultMap" parameterType="java.util.Map">
+			  SELECT
+			  pa.id,
+			  pa.authority_name,
+			  pa.`code`,
+			  pa.description,
+			  pa.module,
+			  pa.priority,
+			  pa.`status`,
+			  pa.updated_time,
+			  pa.operator
+			FROM
+				za_plat_authority pa
+			WHERE
+			    pa.p_id=#{pId}
+	  	  <if test ="status!= null">
+				AND pa.status = #{status,jdbcType=INTEGER}
+		 </if>
+	  	  <if test ="code!= null">
+				AND pa.code like  #{name,jdbcType=VARCHAR}
+		 </if>
+  	   <if test ="name!= null">
+				AND pa.authority_name like  #{name,jdbcType=VARCHAR}
+		</if>
+	    <if test ="startTime!= null">
+				AND  pa.updated_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+		</if>
+		      ORDER BY pa.updated_time DESC
+  </select>
+  
+  <update id="updateAuthSelective" parameterType="com.tz.pojo.ZaPlatAuthority" >
+    update za_plat_authority
+    <set >
+      <if test="pId != null" >
+        p_id = #{pId,jdbcType=VARCHAR},
+      </if>
+      <if test="authorityName != null" >
+        authority_name = #{authorityName,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null" >
+        priority = #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="module != null" >
+        module = #{module,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+ <!-- 查询管理员所有的权限信息 -->
+ <select id="queryAllAuthorityByManagerId" resultMap="BaseResultMap" parameterType="java.lang.String">
+	 	SELECT
+		zpm.id,
+		zpm.manager_name,
+		zpa.authority_name,
+		zpa.`code`,
+		zpr.role_name
+	FROM
+		za_plat_authority zpa
+	INNER JOIN za_plat_role_authority zra ON zpa.id = zra.authority_id
+	INNER JOIN za_plat_role zpr ON zpr.id = zra.role_id
+	INNER JOIN za_plat_manager_role zapr ON zpr.id = zapr.role_id
+	INNER JOIN za_plat_manager zpm ON zpm.id = zapr.manager_id
+	WHERE
+		zpm.id = #{id,jdbcType=VARCHAR}
+	AND zpa.`status` = 0
+	AND zpr.`status` = 0
+	GROUP BY
+	zpa.id
+ </select>
+</mapper>

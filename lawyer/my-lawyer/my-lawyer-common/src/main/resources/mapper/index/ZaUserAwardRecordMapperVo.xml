@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.index.vo.ZaUserAwardRecordMapperVo" >
+  <resultMap id="BaseResultMap" type="com.tz.pojo.ZaUserAwardRecord" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="awardee_id" property="awardeeId" jdbcType="VARCHAR" />
+    <result column="gift_id" property="giftId" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="gift_num" property="giftNum" jdbcType="INTEGER" />
+    <result column="reward" property="reward" jdbcType="DECIMAL" />
+    <result column="award_status" property="awardStatus" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="award_time" property="awardTime" jdbcType="TIMESTAMP" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+  </resultMap>
+
+  
+  <!-- 插入用户打赏或者悬赏消费数据信息 -->
+  <insert id="insertUserAwardRecord" parameterType="com.tz.pojo.ZaUserAwardRecord" >
+    insert into za_user_award_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="awardeeId != null" >
+        awardee_id,
+      </if>
+      <if test="giftId != null" >
+        gift_id,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="giftNum != null" >
+        gift_num,
+      </if>
+      <if test="reward != null" >
+        reward,
+      </if>
+      <if test="awardStatus != null" >
+        award_status,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="awardTime != null" >
+        award_time,
+      </if>
+        created_time,
+        updated_time,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="awardeeId != null" >
+        #{awardeeId,jdbcType=VARCHAR},
+      </if>
+      <if test="giftId != null" >
+        #{giftId,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="giftNum != null" >
+        #{giftNum,jdbcType=INTEGER},
+      </if>
+      <if test="reward != null" >
+        #{reward,jdbcType=DECIMAL},
+      </if>
+      <if test="awardStatus != null" >
+        #{awardStatus,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="awardTime != null" >
+        #{awardTime,jdbcType=TIMESTAMP},
+      </if>
+       NOW(),NOW(),
+    </trim>
+  </insert>
+  
+  
+ <!-- 修改 -->
+   <update id="updateUserAwardRecordSelective" parameterType="com.tz.pojo.ZaUserAwardRecord" >
+    update za_user_award_record
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="awardeeId != null" >
+        awardee_id = #{awardeeId,jdbcType=VARCHAR},
+      </if>
+      <if test="giftId != null" >
+        gift_id = #{giftId,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="giftNum != null" >
+        gift_num = #{giftNum,jdbcType=INTEGER},
+      </if>
+      <if test="reward != null" >
+        reward = #{reward,jdbcType=DECIMAL},
+      </if>
+      <if test="awardStatus != null" >
+        award_status = #{awardStatus,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="awardTime != null" >
+        award_time = #{awardTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  
+ <!-- 根据案件id获取该案件设定的悬赏值 -->
+ <resultMap type="com.tz.pojo.admin.ZaUserAwardRecordAdminVo" id="queryUserAwardRecordByCaseIdMap">
+   <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="awardee_id" property="awardeeId" jdbcType="VARCHAR" />
+    <result column="gift_id" property="giftId" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="gift_num" property="giftNum" jdbcType="INTEGER" />
+    <result column="reward" property="reward" jdbcType="DECIMAL" />
+    <result column="award_status" property="awardStatus" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="gift_name" property="giftName" jdbcType="VARCHAR" />
+ </resultMap>
+ <select id="queryUserAwardRecordByCaseId" resultMap="queryUserAwardRecordByCaseIdMap" parameterType="java.lang.String">
+		  SELECT
+		  uar.id,
+		  uar.user_id,
+		  uar.awardee_id,
+		  uar.price,
+		  uar.gift_num,
+		  uar.reward,
+		  uar.award_status,
+		  uar.type,
+		  g.gift_name
+		FROM
+			za_user_publish_case upc
+		INNER JOIN za_user_award_record uar ON upc.award_id = uar.id
+		LEFT JOIN za_gift g ON uar.gift_id=g.id
+		WHERE
+			upc.id =#{id,jdbcType=VARCHAR} 
+ </select>
+ 
+ 
+  
+  <!--删除悬赏记录 -->
+  <select id="deleteUserAwardRecordById" parameterType="java.lang.String">
+  	DELETE from za_user_award_record WHERE id=#{id,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 获取打赏金额 -->
+  <select id="getRewardRecordById" resultMap="BaseResultMap" parameterType="java.lang.String">
+	SELECT
+	id,
+	user_id,
+	awardee_id,
+	gift_id,
+	price,
+	gift_num,
+	reward,
+	award_status
+	FROM
+	`za_user_award_record`
+	WHERE
+	id =#{awardId}
+  </select>
+  
+  <!-- 设置为打赏取消状态 2-->
+  <update id="alertAwardRecordStatus" parameterType="java.lang.String" >
+		 UPDATE `za_user_award_record`
+		SET award_status = 2
+		WHERE id =#{awardId}
+  </update>
+  
+</mapper>

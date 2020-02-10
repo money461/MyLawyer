@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.vo.ZaPlatRoleAuthorityMapperVo" >
+  <insert id="batchInsertRoleAuthData" parameterType="java.util.List" >
+    insert into za_plat_role_authority (id, authority_id, role_id, operator, created_time, updated_time)
+    values 
+     <foreach collection="platRoleAuthList" index="index" item="roleAuth"   separator="," >
+      ( #{roleAuth.id,jdbcType=VARCHAR}, #{roleAuth.authorityId,jdbcType=VARCHAR}, #{roleAuth.roleId,jdbcType=VARCHAR}, 
+      #{roleAuth.operator,jdbcType=VARCHAR},NOW(), NOW() )
+     </foreach>
+  </insert>
+  <!-- 删除平台角色权限关系 -->
+  <delete id="delPlatRoleAuthByRoleId" parameterType="java.lang.String">
+  	DELETE FROM za_plat_role_authority WHERE role_id=#{id}
+  </delete>
+  <delete id="delPlatRoleAuthByAuthId" parameterType="java.lang.String">
+  	DELETE FROM za_plat_role_authority WHERE authority_id=#{id}
+  </delete>
+  
+</mapper>

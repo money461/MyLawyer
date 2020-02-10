@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.tianzhi.shop520">
+
+    <uses-sdk android:minSdkVersion="9"/>
+    <!-- 添加必要的权限 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission  android:name="android.permission.GET_ACCOUNTS"/>
+    <!-- 蓝牙分享所需的权限 -->
+        <uses-permission android:name="android.permission.BLUETOOTH" />
+        <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- 短信验证登陆功能需要添加次权限来自动填充验证码，用不到可以去掉 -->
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- 拨打电话 -->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true" />
+    <application
+        android:name=".APPLICATION"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.tianzhi.shop520.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+        <activity
+            android:name=".ui.activity.PayDemoActivity"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name" >
+           <!-- <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
+
+        <activity android:name=".ui.WelcomeAct"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/Theme.AppStartLoad">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.StartGuideActivity"
+                  android:screenOrientation="portrait"/>
+<!--activity购物车-->
+<activity android:name=".ui.activity.store.ShoppingCarAct"
+          android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.MainActivity"
+            android:screenOrientation="portrait"/>
+
+        <!--登录-->
+        <activity android:name=".ui.activity.login.LoginAct"
+                  android:screenOrientation="portrait" >
+        </activity>
+        <!--注册-->
+        <activity android:name=".ui.activity.login.RegistAct"
+            android:screenOrientation="portrait"/>
+        <!--找回密码-->
+        <activity android:name=".ui.activity.login.FindPwdAct"
+                  android:screenOrientation="portrait"/>
+        <!--修改密码-->
+        <activity android:name=".ui.activity.personal.ChangePwdAct"
+                  android:screenOrientation="portrait"/>
+        <!--用户协议-->
+        <activity android:name=".ui.activity.login.RegistAgreeAct"
+                  android:screenOrientation="portrait"/>
+        <!--注册成功-->
+        <activity android:name=".ui.activity.login.RegistSuccessAct"
+                  android:screenOrientation="portrait"/>
+        <!--搜索-->
+        <activity android:name=".ui.activity.SearchActivity"
+                  android:screenOrientation="portrait"/>
+        <!--搜索详细界面-->
+        <activity android:name=".ui.activity.store.SearchListActivity"
+                  android:screenOrientation="portrait"/>
+        <!--会员权益-->
+        <activity android:name=".ui.activity.login.MemberBenefitsAct"
+                  android:screenOrientation="portrait"/>
+        <!--会员套餐-->
+        <activity android:name=".ui.activity.login.MemberPagAct"
+                  android:screenOrientation="portrait">
+            </activity>
+        <!--套餐分类-->
+        <activity android:name=".ui.activity.store.PagListAct"
+                  android:screenOrientation="portrait"/>
+        <!--商品分类-->
+        <activity android:name=".ui.activity.store.GoodsClassifyAct"
+                  android:screenOrientation="portrait" />
+        <!--商品详情-->
+        <activity android:name=".ui.activity.store.GoodsInfoAct"
+                  android:screenOrientation="portrait" />
+        <!--确认订单-->
+        <activity android:name=".ui.activity.order.EnsureOrderAct"
+                  android:screenOrientation="portrait"/>
+        <!--支付界面-->
+        <activity android:name=".ui.activity.shop.PayAct"
+                  android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+                  android:exported="false"
+                  android:screenOrientation="behind"
+                  android:windowSoftInputMode="adjustResize|stateHidden"/>
+        <activity android:name=".ui.activity.shop.PaySuccessAct"
+                  android:screenOrientation="portrait"/>
+        <!--个人信息修改   编辑-->
+        <activity android:name=".ui.activity.personal.ChangePersonalInfoAct"
+                  android:screenOrientation="portrait"/>
+        <!--我的订单-->
+        <activity android:name=".ui.activity.order.MyorderAct"
+                  android:screenOrientation="portrait" />
+        <!--订单详情-->
+        <activity android:name=".ui.activity.order.OrderInfoAct"
+                  android:screenOrientation="portrait" />
+        <!--查看物流-->
+        <activity android:name=".ui.activity.order.ShippingAct"
+                  android:screenOrientation="portrait"/>
+        <!--我的推荐-->
+        <activity android:name=".ui.activity.personal.MyRecommendAct"
+                  android:screenOrientation="portrait" />
+        <!--爱心值提取-->
+        <activity android:name=".ui.activity.personal.HeartExtractAct"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".ui.activity.personal.HeartExtractToZfb"
+                  android:screenOrientation="portrait"/>
+        <!--爱心值提取成功-->
+        <activity android:name=".ui.activity.personal.HeartExtractSuccessAct"
+                  android:screenOrientation="portrait"/>
+        <!--爱心值记录-->
+        <activity android:name=".ui.activity.personal.HeartRecordAct"
+                  android:screenOrientation="portrait"/>
+        <!--生成二维码-->
+        <activity android:name=".ui.activity.personal.CreateQrcodeAct"
+                  android:screenOrientation="portrait" />
+        <!--地址管理-->
+        <activity android:name=".ui.activity.shop.AddressManageAct"
+                  android:screenOrientation="portrait" />
+        <!--添加地址-->
+        <activity android:name=".ui.activity.shop.AddAddressAct"
+                  android:screenOrientation="portrait" />
+        <!--会员升级-->
+        <activity android:name=".ui.activity.personal.MemberUpgradeAct"
+                  android:screenOrientation="portrait"/>
+        <!--会员中心-->
+        <activity android:name=".ui.activity.personal.MemberCenterAct"
+                  android:screenOrientation="portrait" />
+        <!--个人信息设置-->
+        <activity android:name=".ui.activity.personal.PersonalSettingAct"
+                  android:screenOrientation="portrait" />
+        <!--关于我们-->
+        <activity android:name=".ui.activity.personal.About520Act"
+                  android:screenOrientation="portrait" />
+        <activity android:name=".ui.activity.personal.WebViewAct">
+
+        </activity>
+
+        <!--如果集成QQ分享，或者使用QQ客户端来进行QQ空间的分享，须要在此处添加一个回调activity，对ACTION_VIEW事件的过滤器-->
+        <activity
+            android:name="cn.sharesdk.tencent.qq.ReceiveActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tencent1106492404" />
+            </intent-filter>
+        </activity>
+        <!--如果您的项目集微信或者微信朋友圈，请查看AndroidManifest.xml配置文件里的package路径,
+        需要在package目录下创建wxapi目录再放置WXEntryActivity。
+         没有此activity在微信分享后回调会检查是否有此activity,没有将会报错。-->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait" />
+        <activity android:name=".wxapi.WXPayEntryActivity"
+                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
+                  android:configChanges="keyboardHidden|orientation|screenSize"
+                  android:exported="true"
+                  android:screenOrientation="portrait"/>
+        <activity
+               android:name="com.mob.tools.MobUIShell"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+             android:configChanges="keyboardHidden|orientation|screenSize"
+             android:windowSoftInputMode="stateHidden|adjustResize">
+         </activity>
+        <activity
+            android:name=".ui.activity.personal.H5PayDemoActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind" >
+        </activity>
+
+        <!-- alipay sdk begin -->
+
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <activity
+            android:name="com.alipay.sdk.app.H5AuthActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden" >
+        </activity>
+        <!-- 填写您从Mob开发者后台中得到的Appkey和AppSecret -->
+        <meta-data android:name="Mob-AppKey" android:value="21b8fadfeae90"/>
+        <meta-data android:name="Mob-AppSecret" android:value="723a66a845963ec1dcf52fb6631c3462"/>
+    </application>
+
+</manifest>

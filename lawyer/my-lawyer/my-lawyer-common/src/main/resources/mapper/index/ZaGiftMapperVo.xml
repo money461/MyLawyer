@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.index.vo.ZaGiftMapperVo" >
+  <resultMap id="BaseResultMap" type="com.tz.pojo.index.vo.ZaGiftVo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="gift_name" property="giftName" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="logo_url" property="logoUrl" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+  </resultMap>
+ 	
+ 	<select id="getGift" resultMap="BaseResultMap">
+ 		SELECT id,gift_name,price,logo_url FROM `za_gift` WHERE `status`=1
+ 	</select>
+ 
+ 	<select id="queryGiftById" resultMap="BaseResultMap" parameterType="java.lang.String">
+ 		SELECT * FROM `za_gift` WHERE id=#{giftId,jdbcType=VARCHAR}
+ 	</select>
+ 
+ <!-- 后台管理系统条件查询 -->
+ <select id="selectGiftList" resultMap="BaseResultMap" parameterType="java.util.Map">
+ 	SELECT * from za_gift WHERE 1=1 
+ 	<if test="name!=null">
+     AND gift_name LIKE #{name,jdbcType=VARCHAR}
+ 	</if>
+ 	<if test="status!=null">
+ 	AND status=#{status,jdbcType=INTEGER}
+ 	</if>
+ 	ORDER BY updated_time DESC
+ </select>
+ 
+ <insert id="insertGiftSelective" parameterType="com.tz.pojo.ZaGift" >
+    insert into za_gift
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="giftName != null" >
+        gift_name,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="logoUrl != null" >
+        logo_url,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="updatedTime != null" >
+        updated_time,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="giftName != null" >
+        #{giftName,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="logoUrl != null" >
+        #{logoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+   <update id="updateGiftSelective" parameterType="com.tz.pojo.ZaGift" >
+    update za_gift
+    <set >
+      <if test="giftName != null" >
+        gift_name = #{giftName,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="logoUrl != null" >
+        logo_url = #{logoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+ 
+<!-- 删除 --> 
+<delete id="delGiftById" parameterType="java.lang.String">
+	DELETE from za_gift WHERE id=#{id,jdbcType=VARCHAR}
+</delete>
+
+</mapper>

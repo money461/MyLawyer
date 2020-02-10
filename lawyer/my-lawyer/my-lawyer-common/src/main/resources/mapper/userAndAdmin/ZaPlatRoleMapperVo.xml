@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.vo.ZaPlatRoleMapperVo" >
+  <resultMap id="BaseResultMap" type="com.tz.pojo.ZaPlatRole" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="p_id" property="pId" jdbcType="VARCHAR" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="priority" property="priority" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+  </resultMap>
+  <!-- 查询所有未被禁用的角色 -->
+  <select id="selectPlatRoleUsable" resultMap="BaseResultMap"  parameterType="java.lang.Integer">
+			 SELECT
+				id,
+				p_id,
+				role_name,
+				status
+			FROM
+				`za_plat_role`
+			<if test="status!=null">
+			WHERE
+				`status` = #{status,jdbcType=INTEGER}
+			</if>
+  </select>
+  
+  <!-- 检验code是否唯一 -->
+  <select id="checkRoleCodeByCode" resultType="java.lang.Integer" parameterType="java.lang.String">
+  	SELECT COUNT(*) FROM `za_plat_role` WHERE `code`=#{code,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 查询角色及其授予权限id -->
+  <resultMap type="com.tz.pojo.vo.ZaPlatRoleVo" id="queryPlatRoleByIdMap">
+  	<id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="p_id" property="pId" jdbcType="VARCHAR" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="priority" property="priority" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    
+    <collection property="ListId" ofType="java.lang.String">
+    	<result column="authority_id"  property="string" jdbcType="VARCHAR" />
+    </collection>  	
+  </resultMap>
+  <select id="queryPlatRoleById" resultMap="queryPlatRoleByIdMap" parameterType="java.lang.String">
+		 SELECT
+		  pr.id,
+		  pr.p_id,
+		  pr.role_name,
+		  pr.description,
+		  pr.`status`,
+		  pr.`code`,
+		  pr.priority,
+		  pra.authority_id
+		FROM
+			`za_plat_role` pr
+		LEFT JOIN za_plat_role_authority pra ON pr.id = pra.role_id
+		WHERE pr.id=#{id,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 查询当前角色id下的子角色信息 -->
+  <select id="queryPlatSonRoleByPid" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	SELECT
+		  pr.id,
+		  pr.p_id,
+		  pr.role_name
+   FROM
+	    `za_plat_role` pr
+	WHERE pr.p_id=#{id,jdbcType=VARCHAR}
+  </select>
+  
+  <!--添加角色 -->
+  <insert id="insertPlatRoleSelective" parameterType="com.tz.pojo.ZaPlatRole" >
+    insert into za_plat_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="pId != null" >
+        p_id,
+      </if>
+      <if test="roleName != null" >
+        role_name,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="priority != null" >
+        priority,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="updatedTime != null" >
+        updated_time,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="pId != null" >
+        #{pId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null" >
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null" >
+        #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateSelectiveById" parameterType="com.tz.pojo.ZaPlatRole" >
+    update za_plat_role
+    <set >
+      <if test="pId != null" >
+        p_id = #{pId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null" >
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null" >
+        priority = #{priority,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+ 
+ <!-- 查询角色 -->
+ <resultMap type="com.tz.pojo.vo.ZaPlatRoleVo" id="selectPlatRoleListMap">
+ 	 <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="p_id" property="pId" jdbcType="VARCHAR" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="priority" property="priority" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+     <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <!-- 一个角色对应多个权限名称 -->
+	    <collection property="ListPlatAuth" ofType="com.tz.pojo.ZaPlatAuthority">
+	    	<result column="authority_name" property="authorityName" jdbcType="VARCHAR" />
+	    	<result column="authority_id" property="id" jdbcType="VARCHAR" />
+	    </collection>
+    
+ </resultMap>
+ <select id="selectPlatRoleList" resultMap="selectPlatRoleListMap" parameterType="java.util.Map">
+			 SELECT
+			  pr.id,
+			  pr.role_name,
+			  pr.description,
+			  pr.`code`,
+			  pr.`status`,
+			  pr.priority,
+			  pr.operator,
+			  pr.updated_time,
+			  pa.id authority_id,
+			  pa.authority_name
+			FROM
+				za_plat_role pr
+			<choose>
+			   <when test="pId==0">
+			     left JOIN za_plat_role_authority pra ON pr.id = pra.role_id
+			     left JOIN za_plat_authority pa ON pra.authority_id=pa.id
+			   </when>
+			   <otherwise>
+			   	INNER JOIN za_plat_role_authority pra ON pr.id = pra.role_id
+			    INNER JOIN za_plat_authority pa ON pra.authority_id=pa.id
+			    </otherwise>
+			</choose>
+			WHERE 
+			    pr.p_id=#{pId,jdbcType=VARCHAR}
+	   <if test ="status!= null">
+				AND pr.status =  #{status,jdbcType=INTEGER}
+		</if>
+	   <if test ="name!= null">
+				AND pr.role_name like  #{name,jdbcType=VARCHAR}
+		</if>
+	    <if test ="startTime!= null">
+				AND  pr.updated_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+		</if>
+		       ORDER BY pr.updated_time DESC
+ </select>
+ 
+ <!-- 删除平台角色 -->
+ <delete id="delPlatRoleById" parameterType="java.lang.String">
+ 	DELETE FROM za_plat_role WHERE id=#{id,jdbcType=VARCHAR}
+ </delete>
+ 
+</mapper>

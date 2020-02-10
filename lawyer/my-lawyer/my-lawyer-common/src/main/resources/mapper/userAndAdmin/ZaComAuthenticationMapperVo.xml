@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.vo.ZaComAuthenticationMapperVo">
+
+	<!-- 查询企业分类名称 -->
+	<resultMap id="BaseResultMap" type="com.tz.pojo.vo.CategoryNames">
+		<result column="categoryName" property="categoryName" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="selectComCategoryNames" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		SELECT
+		ca.category_name,
+		com.id
+		FROM
+		za_com_authentication com
+		INNER JOIN
+		za_com_scope sc ON com.id = sc.com_id
+		INNER JOIN za_com_category ca ON
+		ca.id = sc.com_category_id
+		WHERE
+		ca.category_status = 1
+		AND com.id =
+		#{id,jdbcType=VARCHAR}
+		<!-- 'ansdkafnfnksdnfjksdnfkn' -->
+	</select>
+
+	
+	<resultMap id="selectComAndUserListMap" type="com.tz.pojo.vo.ZaComAuthenticationVo">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="VARCHAR" />
+		<result column="law_id" property="lawId" jdbcType="VARCHAR" />
+		<result column="com_nickname" property="comNickname" jdbcType="VARCHAR" />
+		<result column="com_name" property="comName" jdbcType="VARCHAR" />
+		<result column="com_manager" property="comManager" jdbcType="VARCHAR" />
+		<result column="com_phone" property="comPhone" jdbcType="VARCHAR" />
+		<result column="com_legal_person" property="comLegalPerson"
+			jdbcType="VARCHAR" />
+		<result column="legal_person_phone" property="legalPersonPhone"
+			jdbcType="VARCHAR" />
+		<result column="com_introduce" property="comIntroduce"
+			jdbcType="VARCHAR" />
+		<result column="com_status" property="comStatus" jdbcType="INTEGER" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="com_address" property="comAddress" jdbcType="VARCHAR" />
+		<result column="com_lon" property="comLon" jdbcType="DOUBLE" />
+		<result column="com_lat" property="comLat" jdbcType="DOUBLE" />
+		<result column="com_logo" property="comLogo" jdbcType="VARCHAR" />
+		<result column="licence_url" property="licenceUrl" jdbcType="VARCHAR" />
+		<result column="qualification_url" property="qualificationUrl"
+			jdbcType="VARCHAR" />
+		<result column="ID_card" property="idCard" jdbcType="VARCHAR" />
+		<result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+		<result column="examine_time" property="examineTime" jdbcType="TIMESTAMP" />
+		<result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+		<result column="examine_id" property="examineId" jdbcType="VARCHAR" />
+		<result column="operator" property="operator" jdbcType="VARCHAR" />
+	</resultMap>
+	<!-- 查询已经认证通过的企业用户信息 -->
+	<select id="selectComAndUserList" resultMap="selectComAndUserListMap"
+		parameterType="java.util.HashMap">
+		SELECT
+		u.user_phone,
+		com.id,
+		com.user_id,
+		com.law_id,
+		com.com_nickname,
+		com.com_name,
+		com.com_manager,
+		com.com_phone,
+		com.com_legal_person,
+		com.legal_person_phone,
+		com.com_introduce,
+		com.com_status,
+		com.state,
+		com.com_address,
+		com.com_lon,
+		com.com_lat,
+		com.com_logo,
+		com.licence_url,
+		com.qualification_url,
+		com.ID_card,
+		com.created_time,
+		com.examine_time,
+		com.updated_time,
+		com.examine_id,
+		com.operator
+		FROM
+		za_com_authentication com
+		INNER JOIN za_user u ON com.user_id = u.id
+		WHERE
+			com.com_status != 0 AND com.com_status != 5 AND com.com_status != 6
+		<if test="userPhone!= null">
+			AND u.user_phone LIKE #{userPhone,jdbcType=VARCHAR}
+		</if>
+		<if test="realName!= null">
+			AND com.com_name LIKE #{realName,jdbcType=VARCHAR}
+		</if>
+		<if test="startTime!= null">
+			AND com.created_time between
+			#{startTime,jdbcType=TIMESTAMP} and
+			#{endTime,jdbcType=TIMESTAMP}
+		</if>
+		GROUP BY u.id ORDER BY com.created_time DESC
+	</select>
+	<!-- 查询正在认证的企业用户信息 -->
+	<select id="selectComAndUserAuthList" resultMap="selectComAndUserListMap"
+		parameterType="java.util.HashMap">
+		SELECT
+		u.user_phone,
+		com.id,
+		com.user_id,
+		com.law_id,
+		com.com_nickname,
+		com.com_name,
+		com.com_manager,
+		com.com_phone,
+		com.com_legal_person,
+		com.legal_person_phone,
+		com.com_introduce,
+		com.com_status,
+		com.state,
+		com.com_address,
+		com.com_lon,
+		com.com_lat,
+		com.com_logo,
+		com.licence_url,
+		com.qualification_url,
+		com.ID_card,
+		com.created_time,
+		com.examine_time,
+		com.updated_time,
+		com.examine_id,
+		com.operator
+		FROM
+		za_com_authentication com
+		INNER JOIN za_user u ON com.user_id = u.id
+		WHERE
+			com.com_status != 1 AND com.com_status != 2 AND com.com_status != 3 AND com.com_status != 4
+		<if test="userPhone!= null">
+			AND u.user_phone LIKE #{userPhone,jdbcType=VARCHAR}
+		</if>
+		<if test="realName!= null">
+			AND com.com_name LIKE #{realName,jdbcType=VARCHAR}
+		</if>
+		<if test="startTime!= null">
+			AND com.created_time between
+			#{startTime,jdbcType=TIMESTAMP} and
+			#{endTime,jdbcType=TIMESTAMP}
+		</if>
+		GROUP BY u.id ORDER BY com.created_time DESC
+	</select>
+</mapper>

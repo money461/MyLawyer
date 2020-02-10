@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.vo.ZaLawyerAuthenticationMapperVo">
+	<!-- 查询律师分类名称 -->
+	<resultMap id="BaseResultMap" type="com.tz.pojo.vo.CategoryNames">
+		<result column="categoryName" property="categoryName" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="selectLawyerCategoryNames" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		SELECT
+		cat.case_name as categoryName
+		FROM
+		za_lawyer_authentication law
+		INNER JOIN za_lawyer_case cas ON law.id =
+		cas.law_id
+		INNER JOIN za_case_category cat ON cat.id = cas.case_id
+		WHERE
+		cat.case_status = 1
+		AND law.id = #{id,jdbcType=VARCHAR}
+	</select>
+	<!-- 查询律师下所有案例 -->
+	<resultMap id="selectLawyerAchievementsMap" type="com.tz.pojo.vo.LawyerAchievementsVo">
+		<result column="id" property="id" jdbcType="VARCHAR" />
+		<result column="categoryName" property="categoryName" jdbcType="VARCHAR" />
+		<result column="case_desc" property="caseDesc" jdbcType="VARCHAR" />
+		<result column="case_begin" property="caseBegin" jdbcType="TIMESTAMP" />
+		<result column="case_end" property="caseEnd" jdbcType="TIMESTAMP" />
+	</resultMap>
+	<select id="selectLawyerAchievements" resultMap="selectLawyerAchievementsMap"
+		parameterType="java.lang.String">
+		SELECT
+		ach.id,
+		ach.case_begin,
+		ach.case_end,
+		ach.case_desc,
+		cat.case_name as categoryName
+		FROM
+		`za_lawyer_achievements` ach
+		LEFT JOIN
+		za_case_category cat ON ach.case_id = cat.id
+		WHERE
+		cat.case_status = 1
+		AND ach.law_id = #{id,jdbcType=VARCHAR}
+	</select>
+	<!-- 查询已经认证通过的律师用户信息 -->
+	<resultMap id="selectLawyerAndUserListMap" type="com.tz.pojo.vo.ZaLawyerAuthenticationVo">
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="user_id" property="userId" jdbcType="VARCHAR" />
+		<result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+		<result column="real_name" property="realName" jdbcType="VARCHAR" />
+		<result column="grade" property="grade" jdbcType="VARCHAR" />
+		<result column="law_case" property="lawCase" jdbcType="VARCHAR" />
+		<result column="age_limit" property="ageLimit" jdbcType="INTEGER" />
+		<result column="law_office" property="lawOffice" jdbcType="VARCHAR" />
+		<result column="law_introduce" property="lawIntroduce"
+			jdbcType="VARCHAR" />
+		<result column="licence_url" property="licenceUrl" jdbcType="VARCHAR" />
+		<result column="qualification_url" property="qualificationUrl"
+			jdbcType="VARCHAR" />
+		<result column="ID_card" property="idCard" jdbcType="VARCHAR" />
+		<result column="law_logo" property="lawLogo" jdbcType="VARCHAR" />
+		<result column="province" property="province" jdbcType="VARCHAR" />
+		<result column="city" property="city" jdbcType="VARCHAR" />
+		<result column="law_address" property="lawAddress" jdbcType="VARCHAR" />
+		<result column="com_lon" property="comLon" jdbcType="DOUBLE" />
+		<result column="com_lat" property="comLat" jdbcType="DOUBLE" />
+		<result column="geo_code" property="geoCode" jdbcType="CHAR" />
+		<result column="law_status" property="lawStatus" jdbcType="INTEGER" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+		<result column="examine_time" property="examineTime" jdbcType="TIMESTAMP" />
+		<result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+		<result column="examine_id" property="examineId" jdbcType="VARCHAR" />
+		<result column="operator" property="operator" jdbcType="VARCHAR" />
+	</resultMap>
+	<select id="selectLawyerAndUserList" resultMap="selectLawyerAndUserListMap"
+		parameterType="java.util.HashMap">
+		SELECT
+		u.user_phone,
+		law.id,
+		law.user_id,
+		law.real_name,
+		law.grade,
+		law.law_case,
+		law.age_limit,
+		law.law_office,
+		law.law_introduce,
+		law.licence_url,
+		law.qualification_url,
+		law.ID_card,
+		law.law_logo,
+		law.province,
+		law.city,
+		law.law_address,
+		law.com_lon,
+		law.com_lat,
+		law.geo_code,
+		law.law_status,
+		law.state,
+		law.created_time,
+		law.examine_time,
+		law.updated_time,
+		law.examine_id
+		FROM
+		za_lawyer_authentication law
+		INNER JOIN za_user u ON law.user_id = u.id
+		WHERE
+		law.law_status !=0 AND law.law_status != 4
+		<if test="userPhone!= null">
+			AND u.user_phone LIKE #{userPhone,jdbcType=VARCHAR}
+		</if>
+		<if test="realName!= null">
+			AND law.real_name LIKE #{realName,jdbcType=VARCHAR}
+		</if>
+		<if test="startTime!= null">
+			AND law.created_time between #{startTime,jdbcType=TIMESTAMP} and
+			#{endTime,jdbcType=TIMESTAMP}
+		</if>
+		GROUP BY u.id ORDER BY law.created_time DESC
+	</select>
+	<select id="selectLawyerAndUserAuthList" resultMap="selectLawyerAndUserListMap"
+		parameterType="java.util.HashMap">
+		SELECT
+		u.user_phone,
+		law.id,
+		law.user_id,
+		law.real_name,
+		law.grade,
+		law.law_case,
+		law.age_limit,
+		law.law_office,
+		law.law_introduce,
+		law.licence_url,
+		law.qualification_url,
+		law.ID_card,
+		law.law_logo,
+		law.province,
+		law.city,
+		law.law_address,
+		law.com_lon,
+		law.com_lat,
+		law.geo_code,
+		law.law_status,
+		law.state,
+		law.created_time,
+		law.examine_time,
+		law.updated_time,
+		law.examine_id
+		FROM
+		za_lawyer_authentication law
+		INNER JOIN za_user u ON law.user_id = u.id
+		WHERE
+			law.law_status != 1
+		AND law.law_status != 2
+		AND law.law_status != 3
+		<if test="userPhone!= null">
+			AND u.user_phone LIKE #{userPhone,jdbcType=VARCHAR}
+		</if>
+		<if test="realName!= null">
+			AND law.real_name LIKE #{realName,jdbcType=VARCHAR}
+		</if>
+		<if test="startTime!= null">
+			AND law.created_time between #{startTime,jdbcType=TIMESTAMP} and
+			#{endTime,jdbcType=TIMESTAMP}
+		</if>
+		GROUP BY u.id ORDER BY law.created_time DESC
+	</select>
+
+</mapper>

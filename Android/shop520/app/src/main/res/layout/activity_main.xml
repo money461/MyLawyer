@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/drawerlayout"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+    <RelativeLayout
+        android:id="@+id/fragment_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/base_black">
+
+        <!--<RelativeLayout-->
+            <!--android:id="@+id/title_bar"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="40.0dip"-->
+            <!--&gt;-->
+
+            <!--<ImageView-->
+                <!--android:id="@+id/leftmenu"-->
+                <!--android:layout_width="48.0dip"-->
+                <!--android:layout_height="48.0dip"-->
+                <!--android:padding="12.0dip"-->
+                <!--android:src="@mipmap/back_btn_child"/>-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/tv_title"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="fill_parent"-->
+                <!--android:layout_centerInParent="true"-->
+                <!--android:drawablePadding="5.0dip"-->
+                <!--android:ellipsize="marquee"-->
+                <!--android:focusable="true"-->
+                <!--android:focusableInTouchMode="true"-->
+                <!--android:gravity="center"-->
+                <!--android:marqueeRepeatLimit="marquee_forever"-->
+                <!--android:maxEms="8"-->
+                <!--android:singleLine="true"-->
+                <!--android:text="Title Bar"-->
+                <!--android:textColor="@color/white"-->
+                <!--android:textSize="@dimen/text_level_20"/>/>-->
+        <!--</RelativeLayout>-->
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@color/base_black"
+            android:orientation="vertical">
+
+            <com.tianzhi.shop520.ui.diyview.CustomViewPager
+                android:id="@+id/main_viewpager"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"/>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tl_tabs"
+                android:layout_width="fill_parent"
+                android:layout_height="48dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/base_black"
+                app:tabIndicatorColor="@color/transparent"
+                app:tabMode="scrollable"
+                app:tabPadding="3dp"
+                app:tabSelectedTextColor="@color/colorPrimary"
+                app:tabTextColor="@android:color/white">
+                </android.support.design.widget.TabLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

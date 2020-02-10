@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.index.vo.ZaUserLawyerMapperVo" >
+  <resultMap id="BaseResultMap" type="com.tz.pojo.ZaUserLawyer" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="law_id" property="lawId" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <insert id="insertUserLawyer" parameterType="com.tz.pojo.ZaUserLawyer" >
+    insert into za_user_lawyer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="lawId != null" >
+        law_id,
+      </if>
+        created_time,
+        updated_time,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="lawId != null" >
+        #{lawId,jdbcType=VARCHAR},
+      </if>
+      NOW(),NOW(),
+    </trim>
+  </insert>
+  <!-- 检查用户是否只存在一个律师 -->
+  <select id="checkUserToOneLawyer" resultType="java.lang.Integer" parameterType="java.lang.String">
+  	select count(*) from za_user_lawyer where user_id=#{userId}
+  </select>
+  
+  <!-- 检测用户是否已存在个人专属律师 -->
+  <select id="checkUserLawyer"  resultType="java.lang.Integer">
+    select count(*) from za_user_lawyer where user_id=#{userId} AND law_id=#{lawId}
+  </select>
+  
+  <!-- 用户解绑我的专属律师 -->
+  <delete id="unbundleMyLawyer" >
+  	DELETE FROM za_user_lawyer WHERE user_id=#{userId} AND law_id=#{lawId}
+  </delete>
+  
+</mapper>

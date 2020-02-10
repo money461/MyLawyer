@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.ZaLawyerAuthenticationMapper" >
+  <resultMap id="BaseResultMap" type="com.tz.pojo.ZaLawyerAuthentication" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="real_name" property="realName" jdbcType="VARCHAR" />
+    <result column="grade" property="grade" jdbcType="VARCHAR" />
+    <result column="law_case" property="lawCase" jdbcType="VARCHAR" />
+    <result column="age_limit" property="ageLimit" jdbcType="INTEGER" />
+    <result column="law_office" property="lawOffice" jdbcType="VARCHAR" />
+    <result column="law_introduce" property="lawIntroduce" jdbcType="VARCHAR" />
+    <result column="licence_url" property="licenceUrl" jdbcType="VARCHAR" />
+    <result column="qualification_url" property="qualificationUrl" jdbcType="VARCHAR" />
+    <result column="ID_card" property="idCard" jdbcType="VARCHAR" />
+    <result column="law_logo" property="lawLogo" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="city" property="city" jdbcType="VARCHAR" />
+    <result column="law_phone" property="lawPhone" jdbcType="VARCHAR" />
+    <result column="law_address" property="lawAddress" jdbcType="VARCHAR" />
+    <result column="com_lon" property="comLon" jdbcType="DOUBLE" />
+    <result column="com_lat" property="comLat" jdbcType="DOUBLE" />
+    <result column="geo_code" property="geoCode" jdbcType="CHAR" />
+    <result column="law_status" property="lawStatus" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="examine_time" property="examineTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="examine_id" property="examineId" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_id, real_name, grade, law_case, age_limit, law_office, law_introduce, licence_url, 
+    qualification_url, ID_card, law_logo, province, city, law_phone, law_address, com_lon, 
+    com_lat, geo_code, law_status, state, created_time, examine_time, updated_time, examine_id, 
+    operator
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.tz.pojo.ZaLawyerAuthenticationExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from za_lawyer_authentication
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from za_lawyer_authentication
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from za_lawyer_authentication
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.tz.pojo.ZaLawyerAuthenticationExample" >
+    delete from za_lawyer_authentication
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.tz.pojo.ZaLawyerAuthentication" >
+    insert into za_lawyer_authentication (id, user_id, real_name, 
+      grade, law_case, age_limit, 
+      law_office, law_introduce, licence_url, 
+      qualification_url, ID_card, law_logo, 
+      province, city, law_phone, 
+      law_address, com_lon, com_lat, 
+      geo_code, law_status, state, 
+      created_time, examine_time, updated_time, 
+      examine_id, operator)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, 
+      #{grade,jdbcType=VARCHAR}, #{lawCase,jdbcType=VARCHAR}, #{ageLimit,jdbcType=INTEGER}, 
+      #{lawOffice,jdbcType=VARCHAR}, #{lawIntroduce,jdbcType=VARCHAR}, #{licenceUrl,jdbcType=VARCHAR}, 
+      #{qualificationUrl,jdbcType=VARCHAR}, #{idCard,jdbcType=VARCHAR}, #{lawLogo,jdbcType=VARCHAR}, 
+      #{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR}, #{lawPhone,jdbcType=VARCHAR}, 
+      #{lawAddress,jdbcType=VARCHAR}, #{comLon,jdbcType=DOUBLE}, #{comLat,jdbcType=DOUBLE}, 
+      #{geoCode,jdbcType=CHAR}, #{lawStatus,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, 
+      #{createdTime,jdbcType=TIMESTAMP}, #{examineTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}, 
+      #{examineId,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tz.pojo.ZaLawyerAuthentication" >
+    insert into za_lawyer_authentication
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="realName != null" >
+        real_name,
+      </if>
+      <if test="grade != null" >
+        grade,
+      </if>
+      <if test="lawCase != null" >
+        law_case,
+      </if>
+      <if test="ageLimit != null" >
+        age_limit,
+      </if>
+      <if test="lawOffice != null" >
+        law_office,
+      </if>
+      <if test="lawIntroduce != null" >
+        law_introduce,
+      </if>
+      <if test="licenceUrl != null" >
+        licence_url,
+      </if>
+      <if test="qualificationUrl != null" >
+        qualification_url,
+      </if>
+      <if test="idCard != null" >
+        ID_card,
+      </if>
+      <if test="lawLogo != null" >
+        law_logo,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="lawPhone != null" >
+        law_phone,
+      </if>
+      <if test="lawAddress != null" >
+        law_address,
+      </if>
+      <if test="comLon != null" >
+        com_lon,
+      </if>
+      <if test="comLat != null" >
+        com_lat,
+      </if>
+      <if test="geoCode != null" >
+        geo_code,
+      </if>
+      <if test="lawStatus != null" >
+        law_status,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="examineTime != null" >
+        examine_time,
+      </if>
+      <if test="updatedTime != null" >
+        updated_time,
+      </if>
+      <if test="examineId != null" >
+        examine_id,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        #{grade,jdbcType=VARCHAR},
+      </if>
+      <if test="lawCase != null" >
+        #{lawCase,jdbcType=VARCHAR},
+      </if>
+      <if test="ageLimit != null" >
+        #{ageLimit,jdbcType=INTEGER},
+      </if>
+      <if test="lawOffice != null" >
+        #{lawOffice,jdbcType=VARCHAR},
+      </if>
+      <if test="lawIntroduce != null" >
+        #{lawIntroduce,jdbcType=VARCHAR},
+      </if>
+      <if test="licenceUrl != null" >
+        #{licenceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="qualificationUrl != null" >
+        #{qualificationUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="lawLogo != null" >
+        #{lawLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="lawPhone != null" >
+        #{lawPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="lawAddress != null" >
+        #{lawAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="comLon != null" >
+        #{comLon,jdbcType=DOUBLE},
+      </if>
+      <if test="comLat != null" >
+        #{comLat,jdbcType=DOUBLE},
+      </if>
+      <if test="geoCode != null" >
+        #{geoCode,jdbcType=CHAR},
+      </if>
+      <if test="lawStatus != null" >
+        #{lawStatus,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="examineTime != null" >
+        #{examineTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="examineId != null" >
+        #{examineId,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.tz.pojo.ZaLawyerAuthenticationExample" resultType="java.lang.Integer" >
+    select count(*) from za_lawyer_authentication
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update za_lawyer_authentication
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.realName != null" >
+        real_name = #{record.realName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.grade != null" >
+        grade = #{record.grade,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lawCase != null" >
+        law_case = #{record.lawCase,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ageLimit != null" >
+        age_limit = #{record.ageLimit,jdbcType=INTEGER},
+      </if>
+      <if test="record.lawOffice != null" >
+        law_office = #{record.lawOffice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lawIntroduce != null" >
+        law_introduce = #{record.lawIntroduce,jdbcType=VARCHAR},
+      </if>
+      <if test="record.licenceUrl != null" >
+        licence_url = #{record.licenceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.qualificationUrl != null" >
+        qualification_url = #{record.qualificationUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.idCard != null" >
+        ID_card = #{record.idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lawLogo != null" >
+        law_logo = #{record.lawLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.province != null" >
+        province = #{record.province,jdbcType=VARCHAR},
+      </if>
+      <if test="record.city != null" >
+        city = #{record.city,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lawPhone != null" >
+        law_phone = #{record.lawPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lawAddress != null" >
+        law_address = #{record.lawAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.comLon != null" >
+        com_lon = #{record.comLon,jdbcType=DOUBLE},
+      </if>
+      <if test="record.comLat != null" >
+        com_lat = #{record.comLat,jdbcType=DOUBLE},
+      </if>
+      <if test="record.geoCode != null" >
+        geo_code = #{record.geoCode,jdbcType=CHAR},
+      </if>
+      <if test="record.lawStatus != null" >
+        law_status = #{record.lawStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.state != null" >
+        state = #{record.state,jdbcType=INTEGER},
+      </if>
+      <if test="record.createdTime != null" >
+        created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.examineTime != null" >
+        examine_time = #{record.examineTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedTime != null" >
+        updated_time = #{record.updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.examineId != null" >
+        examine_id = #{record.examineId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operator != null" >
+        operator = #{record.operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update za_lawyer_authentication
+    set id = #{record.id,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=VARCHAR},
+      real_name = #{record.realName,jdbcType=VARCHAR},
+      grade = #{record.grade,jdbcType=VARCHAR},
+      law_case = #{record.lawCase,jdbcType=VARCHAR},
+      age_limit = #{record.ageLimit,jdbcType=INTEGER},
+      law_office = #{record.lawOffice,jdbcType=VARCHAR},
+      law_introduce = #{record.lawIntroduce,jdbcType=VARCHAR},
+      licence_url = #{record.licenceUrl,jdbcType=VARCHAR},
+      qualification_url = #{record.qualificationUrl,jdbcType=VARCHAR},
+      ID_card = #{record.idCard,jdbcType=VARCHAR},
+      law_logo = #{record.lawLogo,jdbcType=VARCHAR},
+      province = #{record.province,jdbcType=VARCHAR},
+      city = #{record.city,jdbcType=VARCHAR},
+      law_phone = #{record.lawPhone,jdbcType=VARCHAR},
+      law_address = #{record.lawAddress,jdbcType=VARCHAR},
+      com_lon = #{record.comLon,jdbcType=DOUBLE},
+      com_lat = #{record.comLat,jdbcType=DOUBLE},
+      geo_code = #{record.geoCode,jdbcType=CHAR},
+      law_status = #{record.lawStatus,jdbcType=INTEGER},
+      state = #{record.state,jdbcType=INTEGER},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      examine_time = #{record.examineTime,jdbcType=TIMESTAMP},
+      updated_time = #{record.updatedTime,jdbcType=TIMESTAMP},
+      examine_id = #{record.examineId,jdbcType=VARCHAR},
+      operator = #{record.operator,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tz.pojo.ZaLawyerAuthentication" >
+    update za_lawyer_authentication
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        grade = #{grade,jdbcType=VARCHAR},
+      </if>
+      <if test="lawCase != null" >
+        law_case = #{lawCase,jdbcType=VARCHAR},
+      </if>
+      <if test="ageLimit != null" >
+        age_limit = #{ageLimit,jdbcType=INTEGER},
+      </if>
+      <if test="lawOffice != null" >
+        law_office = #{lawOffice,jdbcType=VARCHAR},
+      </if>
+      <if test="lawIntroduce != null" >
+        law_introduce = #{lawIntroduce,jdbcType=VARCHAR},
+      </if>
+      <if test="licenceUrl != null" >
+        licence_url = #{licenceUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="qualificationUrl != null" >
+        qualification_url = #{qualificationUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null" >
+        ID_card = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="lawLogo != null" >
+        law_logo = #{lawLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="lawPhone != null" >
+        law_phone = #{lawPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="lawAddress != null" >
+        law_address = #{lawAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="comLon != null" >
+        com_lon = #{comLon,jdbcType=DOUBLE},
+      </if>
+      <if test="comLat != null" >
+        com_lat = #{comLat,jdbcType=DOUBLE},
+      </if>
+      <if test="geoCode != null" >
+        geo_code = #{geoCode,jdbcType=CHAR},
+      </if>
+      <if test="lawStatus != null" >
+        law_status = #{lawStatus,jdbcType=INTEGER},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="examineTime != null" >
+        examine_time = #{examineTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="examineId != null" >
+        examine_id = #{examineId,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tz.pojo.ZaLawyerAuthentication" >
+    update za_lawyer_authentication
+    set user_id = #{userId,jdbcType=VARCHAR},
+      real_name = #{realName,jdbcType=VARCHAR},
+      grade = #{grade,jdbcType=VARCHAR},
+      law_case = #{lawCase,jdbcType=VARCHAR},
+      age_limit = #{ageLimit,jdbcType=INTEGER},
+      law_office = #{lawOffice,jdbcType=VARCHAR},
+      law_introduce = #{lawIntroduce,jdbcType=VARCHAR},
+      licence_url = #{licenceUrl,jdbcType=VARCHAR},
+      qualification_url = #{qualificationUrl,jdbcType=VARCHAR},
+      ID_card = #{idCard,jdbcType=VARCHAR},
+      law_logo = #{lawLogo,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      law_phone = #{lawPhone,jdbcType=VARCHAR},
+      law_address = #{lawAddress,jdbcType=VARCHAR},
+      com_lon = #{comLon,jdbcType=DOUBLE},
+      com_lat = #{comLat,jdbcType=DOUBLE},
+      geo_code = #{geoCode,jdbcType=CHAR},
+      law_status = #{lawStatus,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      examine_time = #{examineTime,jdbcType=TIMESTAMP},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      examine_id = #{examineId,jdbcType=VARCHAR},
+      operator = #{operator,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

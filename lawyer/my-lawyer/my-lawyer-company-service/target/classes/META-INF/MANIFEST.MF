@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Implementation-Title: my-lawyer-company-service
+Implementation-Version: 1.0.0
+Built-By: win10
+Implementation-Vendor-Id: com.tz.my-lawyer
+Build-Jdk: 1.8.0_141
+Implementation-URL: http://projects.spring.io/spring-boot/my-lawyer/my
+ -lawyer-company-service/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+

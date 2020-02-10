@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.index.vo.ZaUserMapperVo" >
+  <resultMap id="BaseResultMap" type="com.tz.pojo.ZaUser" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_account" property="userAccount" jdbcType="VARCHAR" />
+    <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="user_nick" property="userNick" jdbcType="VARCHAR" />
+    <result column="user_gender" property="userGender" jdbcType="INTEGER" />
+    <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+    <result column="user_email" property="userEmail" jdbcType="VARCHAR" />
+    <result column="head_url" property="headUrl" jdbcType="VARCHAR" />
+    <result column="user_address" property="userAddress" jdbcType="VARCHAR" />
+    <result column="user_type" property="userType" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- 获取用户个人中心个人信息 -->
+  <resultMap type="com.tz.pojo.index.vo.PersonalInfo" id="PersonalCenterMap">
+  	 <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+  	 <result column="head_url" property="headUrl" jdbcType="VARCHAR" />
+  	 <result column="user_name" property="userName" jdbcType="VARCHAR" />
+  	 <result column="coin" property="coin" jdbcType="VARCHAR" />
+  	 <result column="grade" property="grade" jdbcType="VARCHAR" />
+  	 <result column="law_office" property="lawOffice" jdbcType="VARCHAR" />
+  	 <result column="state" property="state" jdbcType="INTEGER" />
+  	 <result column="law_case" property="lawCase" jdbcType="VARCHAR" />
+  	 <result column="com_status" property="comStatus" jdbcType="VARCHAR" />
+  	 <result column="law_ensure" property="lawEnsure" jdbcType="INTEGER" />
+  	 <!-- 企业经营范围 -->
+  	 <collection property="comScopeList" ofType="com.tz.pojo.ZaComCategory">
+  	    <result column="category_name" property="categoryName" jdbcType="VARCHAR" />
+  	 </collection>
+  </resultMap>
+  <select id="getPersonalCenter" resultMap="PersonalCenterMap">
+  		<choose>
+  			<when test="userType!=null and userType==1 and userId!=null">
+					SELECT
+					u.id user_id,
+					u.head_url,
+					u.user_nick user_name,
+					CONCAT(IFNULL(up.coin_surplus,0),'法币') coin,
+					u.state
+					FROM
+					za_user u
+					LEFT JOIN za_user_profit up ON u.id = up.user_id
+					WHERE
+					u.id =#{userId} 			
+  			</when>
+  			<when test="userType!=null and userType==2 and userId!=null">
+					SELECT
+					la.id user_id,
+					la.law_logo head_url,
+					CONCAT(la.real_name," 律师") user_name,
+					la.grade,
+					la.law_office,
+					la.law_case,
+					la.state
+					FROM
+					za_lawyer_authentication la
+					WHERE
+					la.id=#{userId}
+  			</when>
+  			<when test="userType!=null and userType==3 and userId!=null">
+					SELECT
+					au.id user_id,
+					au.com_name user_name,
+					au.com_logo head_url,
+					ISNULL(au.law_id) law_ensure,
+					CASE au.com_status
+					WHEN 0 THEN
+					'企业审核中'
+					WHEN 1 THEN
+					'企业认证'
+					WHEN 2 THEN
+					'企业关停'
+					END com_status,
+					ca.category_name
+					FROM
+					za_com_authentication au
+					LEFT JOIN za_com_scope cs ON au.id = cs.com_id
+					LEFT JOIN za_com_category ca ON cs.com_category_id = ca.id
+					WHERE
+					au.id =#{userId}
+  			</when>
+  		</choose>
+  </select>
+  
+  <!-- 获取用户 -->
+  <resultMap type="com.tz.pojo.index.vo.MyCustomer" id="MyCustomertMap">
+  	 <result column="user_id" property="userId" jdbcType="VARCHAR" />
+  	 <result column="head_url" property="headUrl" jdbcType="VARCHAR" />
+  	 <result column="user_nick" property="userNick" jdbcType="VARCHAR" />
+  	 <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+  	 <result  column="user_address" property="userAddress" jdbcType="VARCHAR" />
+  	 <result column="usernick" property="usernick" jdbcType="VARCHAR" />
+	 <result column="password" property="password" jdbcType="VARCHAR" />
+	 <result column="username" property="username" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getMyCustomert" resultMap="MyCustomertMap" parameterType="java.lang.String">
+			  SELECT
+			  u.id user_id,
+			  u.head_url,
+			  u.user_nick,
+			  u.user_phone,
+			  u.user_address,
+			  ue.usernick,
+              ue.password,
+              ue.username
+			FROM
+				`za_user_lawyer` ul
+			INNER JOIN za_user u ON ul.user_id = u.id
+			INNER JOIN za_user_escrow ue ON u.id= ue.user_id
+			WHERE
+			    ue.type=4
+			    AND 
+				ul.law_id =#{userId}
+  </select>
+  
+  <select id="queryUserById" resultMap ="BaseResultMap" parameterType="java.lang.String">
+  		SELECT * FROM `za_user` WHERE id=#{id}
+  </select>
+  
+</mapper>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/RelativeLayout1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+    <com.tianzhi.shop520.ui.diyview.SlidingControl
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/ScrollLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:visibility="visible" >
+
+        <ImageView
+                android:id="@+id/guide_1"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:scaleType="fitXY"
+                >
+        </ImageView>
+
+        <ImageView
+                android:id="@+id/guide_2"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:scaleType="fitXY"
+                >
+        </ImageView>
+        <ImageView
+            android:id="@+id/guide_3"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="fitXY"
+            >
+        </ImageView>
+        <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                >
+
+            <ImageView
+                    android:id="@+id/guide_4"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:scaleType="fitXY" >
+            </ImageView>
+
+            <ImageButton
+                    android:id="@+id/startBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:scaleType="fitXY"
+                    android:textColor="@color/white"
+                    android:background = "@color/transparent"/>
+
+            <!--<ImageButton-->
+                    <!--android:id="@+id/startBtn"-->
+                    <!--android:layout_width="@dimen/btn_start_width"-->
+                    <!--android:layout_height="@dimen/btn_start_height"-->
+                    <!--android:layout_alignParentBottom="true"-->
+                    <!--android:layout_centerHorizontal="true"-->
+                    <!--android:layout_marginBottom="@dimen/btn_margin_bottom"-->
+                    <!--android:background="@drawable/guide_btn"-->
+                    <!--android:scaleType="fitXY"-->
+                    <!--android:textColor="@color/white" />-->
+        </RelativeLayout>
+    </com.tianzhi.shop520.ui.diyview.SlidingControl>
+
+    <LinearLayout
+            android:id="@+id/llayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10.0dip"
+            android:orientation="horizontal"
+            android:visibility="gone" >
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:clickable="true"
+                android:src="@drawable/bg_page_indicator" />
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:clickable="true"
+                android:src="@drawable/bg_page_indicator" />
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:clickable="true"
+                android:src="@drawable/bg_page_indicator" />
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:clickable="true"
+                android:src="@drawable/bg_page_indicator" />
+    </LinearLayout>
+
+</RelativeLayout>

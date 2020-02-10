@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="40.0dip"
+        android:background="@color/white"
+        android:padding="@dimen/text_spacing_medium"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/weixin_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/weixin_pay"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/text_spacing_medium"
+            android:layout_toRightOf="@id/weixin_pay"
+            android:text="微信支付"/>
+
+        <CheckBox
+            android:id="@+id/ckb_wx"
+            style="@style/CustomCheckboxStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/text_spacing_medium"
+            android:checked="true"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40.0dip"
+        android:layout_below="@id/relativeLayout"
+        android:background="@color/white"
+        android:padding="@dimen/text_spacing_medium"
+        android:id="@+id/relativeLayout2">
+
+        <ImageView
+            android:id="@+id/zhifubao_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/zhifubao_pay"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/text_spacing_medium"
+            android:layout_toRightOf="@+id/zhifubao_pay"
+            android:text="支付宝支付"/>
+
+        <CheckBox
+            android:id="@+id/ckb_zfb"
+            style="@style/CustomCheckboxStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:checked="false"
+            android:layout_marginRight="@dimen/text_spacing_medium"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_topay"
+        android:layout_width="270dp"
+        android:layout_height="40.0dip"
+        android:background="@drawable/shape_btn_green"
+        android:gravity="center"
+        android:text="确认支付"
+        android:textColor="@color/white"
+        android:layout_below="@+id/relativeLayout2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="90dp"/>
+</RelativeLayout>

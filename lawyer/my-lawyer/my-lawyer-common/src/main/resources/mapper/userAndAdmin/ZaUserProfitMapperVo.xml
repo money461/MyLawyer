@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.vo.ZaUserProfitMapperAdminVo" >
+  <resultMap id="BaseResultMap" type="com.tz.pojo.ZaUserProfit" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="user_type" property="userType" jdbcType="INTEGER" />
+    <result column="coin_consum_total" property="coinConsumTotal" jdbcType="DECIMAL" />
+    <result column="coin_surplus" property="coinSurplus" jdbcType="DECIMAL" />
+    <result column="coin_income" property="coinIncome" jdbcType="DECIMAL" />
+    <result column="coin_in_total" property="coinInTotal" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="last_use_time" property="lastUseTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- 查询用户总收益信息 -->
+  <resultMap type="com.tz.pojo.admin.ZaUserProfitVo" id="ZaUserProfitListMap">
+  	<id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="account" property="account" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="user_type" property="userType" jdbcType="INTEGER" />
+    <result column="coin_consum_total" property="coinConsumTotal" jdbcType="DECIMAL" />
+    <result column="coin_surplus" property="coinSurplus" jdbcType="DECIMAL" />
+    <result column="coin_income" property="coinIncome" jdbcType="DECIMAL" />
+    <result column="coin_in_total" property="coinInTotal" jdbcType="DECIMAL" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="last_use_time" property="lastUseTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+	  <select id="getZaUserProfitList" resultMap="ZaUserProfitListMap" parameterType="java.util.Map">
+	    <choose>
+	      <when test="userType!=null and userType==1 ">
+	      	 SELECT
+			up.id,
+			tm.user_nick name,
+			tm.user_account account,
+			tm.user_phone phone,
+			up.user_id,
+			up.user_type,
+			up.coin_consum_total,
+			up.coin_surplus,
+			up.coin_in_total,
+			up.status,
+			up.last_use_time,
+			up.updated_time,
+			up.operator
+			FROM
+			`za_user_profit` up
+			INNER JOIN za_user tm ON tm.id = up.user_id
+			WHERE up.user_type=1
+			 <if test ="name!= null">
+				AND tm.user_nick like  #{name,jdbcType=VARCHAR}
+		   </if>
+			 <if test ="account!= null">
+				AND tm.user_account like  #{account,jdbcType=VARCHAR}
+		   </if>
+			 <if test ="phone!=null">
+				AND tm.user_phone like  #{phone,jdbcType=VARCHAR}
+		   </if>
+			 <if test ="status!=null">
+				AND up.status =  #{status,jdbcType=INTEGER}
+		   </if>
+	       <if test ="startTime!= null">
+				AND  up.updated_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+		   </if>
+		       ORDER BY up.updated_time DESC
+	      </when>
+	      <when test="userType!=null and userType==2">
+			SELECT
+			up.id,
+			la.real_name name,
+			tm.user_account account,
+			la.law_phone phone,
+			up.user_id,
+			up.user_type,
+			up.coin_consum_total,
+			up.coin_surplus,
+			up.coin_in_total,
+			up. STATUS,
+			up.last_use_time,
+			up.updated_time,
+			up.operator
+			FROM
+			`za_user_profit` up
+			INNER JOIN za_lawyer_authentication la ON la.id=up.user_id
+			LEFT JOIN za_user tm ON tm.id = la.user_id
+			WHERE up.user_type=2
+			<if test ="name!= null">
+				AND la.real_name like  #{name,jdbcType=VARCHAR}
+		   </if>
+			 <if test ="account!= null">
+				AND tm.user_account like  #{account,jdbcType=VARCHAR}
+		   </if>
+			 <if test ="phone!=null">
+				AND la.law_phone like  #{phone,jdbcType=VARCHAR}
+		   </if>
+			 <if test ="status!=null">
+				AND up.status =  #{status,jdbcType=INTEGER}
+		   </if>
+	       <if test ="startTime!= null">
+				AND  up.updated_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+		   </if>
+		       ORDER BY up.updated_time DESC
+	      </when>
+		  <when test="userType!=null and userType==3">
+			SELECT
+			up.id,
+			ca.com_name name,
+			tm.user_account account,
+			ca.com_phone phone,
+			up.user_id,
+			up.user_type,
+			up.coin_consum_total,
+			up.coin_surplus,
+			up.coin_in_total,
+			up. STATUS,
+			up.last_use_time,
+			up.updated_time,
+			up.operator
+			FROM
+			`za_user_profit` up
+			INNER JOIN za_com_authentication ca ON ca.id=up.user_id
+			LEFT JOIN za_user tm ON tm.id = ca.user_id
+			WHERE up.user_type=3
+			<if test ="name!= null">
+				AND ca.com_name like  #{name,jdbcType=VARCHAR}
+		   </if>
+			 <if test ="account!= null">
+				AND tm.user_account like  #{account,jdbcType=VARCHAR}
+		   </if>
+			 <if test ="phone!=null">
+				AND ca.com_phone like  #{phone,jdbcType=VARCHAR}
+		   </if>
+			 <if test ="status!=null">
+				AND up.status =  #{status,jdbcType=INTEGER}
+		   </if>
+	       <if test ="startTime!= null">
+				AND  up.updated_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+		   </if>
+		       ORDER BY up.updated_time DESC
+	      </when>
+	    </choose>
+  </select>
+
+<!--更新修改 -->
+<update id="updateUserProfitSelective" parameterType="com.tz.pojo.ZaUserProfit" >
+    update za_user_profit
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="userType != null" >
+        user_type = #{userType,jdbcType=INTEGER},
+      </if>
+      <if test="coinConsumTotal != null" >
+        coin_consum_total = #{coinConsumTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="coinSurplus != null" >
+        coin_surplus = #{coinSurplus,jdbcType=DECIMAL},
+      </if>
+      <if test="coinIncome != null" >
+        coin_income = #{coinIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="coinInTotal != null" >
+        coin_in_total = #{coinInTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUseTime != null" >
+        last_use_time = #{lastUseTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+  
+</mapper>

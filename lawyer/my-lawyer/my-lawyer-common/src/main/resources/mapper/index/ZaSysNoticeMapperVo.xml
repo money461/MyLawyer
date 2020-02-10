@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.index.vo.ZaSysNoticeMapperVo" >
+  <resultMap id="BaseResultIndexMap" type="com.tz.pojo.ZaSysNotice" >
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="system_id" jdbcType="VARCHAR" property="systemId" />
+    <result column="from_user_id" jdbcType="VARCHAR" property="fromUserId" />
+    <result column="to_user_id" jdbcType="VARCHAR" property="toUserId" />
+    <result column="event_id" jdbcType="VARCHAR" property="eventId" />
+    <result column="notice_type" jdbcType="INTEGER" property="noticeType" />
+    <result column="agree" jdbcType="INTEGER" property="agree" />
+    <result column="handle_state" jdbcType="INTEGER" property="handleState" />
+    <result column="del_state" jdbcType="INTEGER" property="delState" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+  </resultMap>
+  
+  <!-- 查询通知记录 -->
+  <select id="querySystNoticeById" resultMap="BaseResultIndexMap" parameterType="java.lang.Long">
+  	 SELECT * FROM `za_sys_notice` where id=#{id};
+  </select>
+  
+  <!-- 将消息写入表中 -->
+  <insert id="insertSysNotice" parameterType="com.tz.pojo.ZaSysNotice" >
+      <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+        SELECT LAST_INSERT_ID()  AS id
+      </selectKey>
+    insert into za_sys_notice
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="systemId != null">
+        system_id,
+      </if>
+      <if test="fromUserId != null">
+        from_user_id,
+      </if>
+      <if test="toUserId != null">
+        to_user_id,
+      </if>
+      <if test="eventId != null">
+        event_id,
+      </if>
+      <if test="noticeType != null">
+        notice_type,
+      </if>
+      <if test="agree != null">
+        agree,
+      </if>
+      <if test="handleState != null">
+        handle_state,
+      </if>
+      <if test="delState != null">
+        del_state,
+      </if>
+      <if test="message != null">
+        message,
+      </if>
+        created_time,
+        updated_time,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="systemId != null">
+        #{systemId,jdbcType=VARCHAR},
+      </if>
+      <if test="fromUserId != null">
+        #{fromUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="toUserId != null">
+        #{toUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="eventId != null">
+        #{eventId,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeType != null">
+        #{noticeType,jdbcType=INTEGER},
+      </if>
+      <if test="agree != null">
+        #{agree,jdbcType=INTEGER},
+      </if>
+      <if test="handleState != null">
+        #{handleState,jdbcType=INTEGER},
+      </if>
+      <if test="delState != null">
+        #{delState,jdbcType=INTEGER},
+      </if>
+      <if test="message != null">
+        #{message,jdbcType=LONGVARCHAR},
+      </if>
+      NOW(),NOW(),
+    </trim>
+  </insert>
+  
+  <!-- 更新通知 -->
+  <update id="updateSysNoticeById" parameterType="com.tz.pojo.ZaSysNotice" >
+    update za_sys_notice
+    <set>
+      <if test="systemId != null">
+        system_id = #{systemId,jdbcType=VARCHAR},
+      </if>
+      <if test="fromUserId != null">
+        from_user_id = #{fromUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="toUserId != null">
+        to_user_id = #{toUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="eventId != null">
+        event_id = #{eventId,jdbcType=VARCHAR},
+      </if>
+      <if test="noticeType != null">
+        notice_type = #{noticeType,jdbcType=INTEGER},
+      </if>
+      <if test="agree != null">
+        agree = #{agree,jdbcType=INTEGER},
+      </if>
+      <if test="handleState != null">
+        handle_state = #{handleState,jdbcType=INTEGER},
+      </if>
+      <if test="delState != null">
+        del_state = #{delState,jdbcType=INTEGER},
+      </if>
+      <if test="createdTime != null">
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="message != null">
+        message = #{message,jdbcType=LONGVARCHAR},
+      </if>
+       updated_time = NOW(),
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!-- 查询消息记录信息 -->
+  <resultMap type="com.tz.pojo.index.vo.ZaSysNoticeVo" id="querySysNoticeMap">
+  	<id column="id" jdbcType="BIGINT" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="head_url" jdbcType="VARCHAR" property="headUrl" />
+    <result column="system_id" jdbcType="VARCHAR" property="systemId" />
+    <result column="from_user_id" jdbcType="VARCHAR" property="fromUserId" />
+    <result column="to_user_id" jdbcType="VARCHAR" property="toUserId" />
+    <result column="event_id" jdbcType="VARCHAR" property="eventId" />
+    <result column="notice_type" jdbcType="INTEGER" property="noticeType" />
+    <result column="agree" jdbcType="INTEGER" property="agree" />
+    <result column="handle_state" jdbcType="INTEGER" property="handleState" />
+    <result column="del_state" jdbcType="INTEGER" property="delState" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+  </resultMap>
+  <select id="querySysNoticeByUserId" resultMap="querySysNoticeMap" >
+    <if test="noticeType!=null and noticeType==0 or noticeType==2 ">
+			  SELECT
+			  sn.id,
+			  sn.message,
+			  sn.to_user_id,
+			  sn.from_user_id,
+			  sn.event_id,
+			  sn.handle_state,
+              sn.updated_time
+			FROM
+				`za_sys_notice` sn
+			WHERE
+			<if test="noticeType==0">
+			  sn.notice_type in(0,5)
+			</if>
+			<if test="noticeType==2">
+			  sn.notice_type=2
+			</if>
+			AND sn.del_state=0
+			AND sn.to_user_id =#{userId}
+      	    ORDER BY sn.updated_time DESC 
+    	</if>
+    	<if test="noticeType!=null and noticeType==1 or noticeType==3">
+			  SELECT
+				CONCAT(
+					la.real_name,
+					'律师'
+				) name,
+				la.law_logo head_url,
+				sn.id,
+				sn.to_user_id,
+				sn.from_user_id,
+				sn.message,
+				sn.event_id,
+				sn.handle_state,
+				sn.agree,
+				sn.updated_time
+			FROM
+				`za_sys_notice` sn
+			INNER JOIN za_lawyer_authentication la ON la.id = sn.from_user_id
+			WHERE
+				sn.notice_type IN (1, 3)
+			AND sn.del_state = 0
+			AND sn.to_user_id =#{userId}
+			ORDER BY
+				sn.updated_time DESC
+    	</if>
+		 <if test="noticeType!=null and noticeType==4">
+		 	 SELECT
+			    u.user_nick name,
+				u.head_url,
+				sn.id,
+				sn.to_user_id,
+				sn.from_user_id,
+				sn.message,
+				sn.event_id,
+				sn.handle_state,
+				sn.agree,
+				sn.updated_time
+			FROM
+				`za_sys_notice` sn
+			INNER JOIN za_user u ON u.id = sn.from_user_id
+			WHERE
+				sn.notice_type =4
+			AND sn.del_state = 0
+			AND sn.to_user_id =#{userId}
+			ORDER BY
+				sn.updated_time DESC
+		 </if>
+  </select>
+  
+  <!-- 批量删除通知消息 -->
+  <delete id="batchDelNoticeById" >
+  	 delete from za_sys_notice where id in
+        <foreach item="id" collection="idStr"  index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+  </delete>
+  
+</mapper>

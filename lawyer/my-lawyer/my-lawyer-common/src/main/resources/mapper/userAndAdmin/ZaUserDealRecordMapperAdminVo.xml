@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.vo.ZaUserDealRecordMapperAdminVo" >
+
+  <!-- 获取消费表信息 -->
+  <resultMap id="UserPurchaseRecordListMap" type="com.tz.pojo.admin.ZaUserPurchaseRecordAdminVo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="deal_code" property="dealCode" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />	
+    <result column="pay_cash" property="payCash" jdbcType="DECIMAL" />
+    <result column="pay_type" property="pay_type" jdbcType="VARCHAR" />
+    <result column="pay_status" property="pay_status" jdbcType="VARCHAR" />
+    <result column="consum_type" property="consum_type" jdbcType="VARCHAR" />
+    <result column="in_out" property="in_out" jdbcType="VARCHAR" />
+    <result column="event_desc" property="eventDesc" jdbcType="VARCHAR" />
+    <result column="user_account" property="userAccount" jdbcType="VARCHAR" />
+    <result column="payee_real_name" property="payeeRealName" jdbcType="VARCHAR" />
+    <result column="consum_time" property="consumTime" jdbcType="TIMESTAMP" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <select id="getUserPurchaseRecordList" resultMap="UserPurchaseRecordListMap" parameterType="java.util.Map" >
+    <choose>
+    	<when test="userType!=null and userType==1">
+	    		SELECT
+				upr.id,
+				upr.deal_code,
+			  u.user_account user_name,
+			  upr.pay_cash,
+			  CASE upr.pay_type WHEN 0 THEN '微信支付' WHEN 1 THEN '支付宝支付' WHEN 2 THEN '充值账户支付' END pay_type,
+			  CASE upr.pay_status WHEN 0 THEN '消费付款处理中' WHEN 2 THEN '消费付款失败' WHEN 1 THEN '消费付款成功' END pay_status,
+			  CASE upr.consum_type WHEN 0 THEN '购物消费' WHEN 1 THEN '打赏消费' WHEN 2 THEN '案件悬赏消费' WHEN 3 THEN '提现消费' END consum_type,
+			  CASE upr.in_out WHEN 0 THEN '收入' WHEN 1 THEN '支出' WHEN 2 THEN '其它' END in_out,
+			  upr.event_desc,
+			  upr.user_account,
+			  upr.payee_real_name,
+			  upr.consum_time,
+			  upr.created_time,
+			  upr.updated_time
+			FROM
+				za_user_purchase_record upr
+			INNER JOIN za_user u ON u.id = upr.user_id
+			WHERE
+			   upr.user_type=1
+			 <if test="payType!=null">
+			 	AND upr.pay_type=#{payType,jdbcType=INTEGER}
+			 </if>
+			 <if test="consumType!=null">
+			 	AND upr.consum_type=#{consumType,jdbcType=INTEGER}
+			 </if>
+			 <if test="inOut!=null">
+			 	AND upr.in_out=#{inOut,jdbcType=INTEGER}
+			 </if>
+			 <if test="payStatus!=null">
+			 	AND upr.pay_status=#{payStatus,jdbcType=INTEGER}
+			 </if>
+			 <if test="userName!=null">
+			 	AND u.user_account like #{userName,jdbcType=VARCHAR}
+			 </if>
+			 <if test ="startTime!= null">
+				AND  upr.updated_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+		   </if>
+			 ORDER BY upr.updated_time DESC
+	    	</when>
+	    	
+	    	<when test="userType!=null and userType==2">
+				SELECT
+				upr.id,
+				upr.deal_code,
+				CONCAT(la.real_name,'律师') user_name,
+				upr.pay_cash,
+				CASE upr.pay_type WHEN 0 THEN '微信支付' WHEN 1 THEN '支付宝支付' WHEN 2 THEN
+				'充值账户支付' END pay_type,
+				CASE upr.pay_status WHEN 0 THEN '消费付款处理中' WHEN 2 THEN '消费付款失败' WHEN 1 THEN
+				'消费付款成功' END pay_status,
+				CASE upr.consum_type WHEN 0 THEN '购物消费' WHEN 1 THEN '打赏消费' WHEN 2 THEN
+				'案件悬赏消费' WHEN 3 THEN '提现消费' END consum_type,
+				CASE upr.in_out WHEN 0 THEN '收入' WHEN 1 THEN '支出' WHEN 2 THEN '其它' END
+				in_out,
+				upr.event_desc,
+				upr.user_account,
+				upr.payee_real_name,
+				upr.consum_time,
+				upr.created_time,
+				upr.updated_time
+				FROM
+				za_user_purchase_record upr
+				INNER JOIN za_lawyer_authentication la ON la.id = upr.user_id
+				WHERE
+				  upr.user_type=2
+			 <if test="payType!=null">
+			 	AND upr.pay_type=#{payType,jdbcType=INTEGER}
+			 </if>
+			 <if test="consumType!=null">
+			 	AND upr.consum_type=#{consumType,jdbcType=INTEGER}
+			 </if>
+			 <if test="inOut!=null">
+			 	AND upr.in_out=#{inOut,jdbcType=INTEGER}
+			 </if>
+			 <if test="payStatus!=null">
+			 	AND upr.pay_status=#{payStatus,jdbcType=INTEGER}
+			 </if>
+			 <if test="userName!=null">
+			 	AND la.real_name like #{userName,jdbcType=VARCHAR}
+			 </if>
+			 <if test ="startTime!= null">
+				AND  upr.updated_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+		   </if>
+				ORDER BY upr.updated_time DESC	
+    	</when>
+	    	<when test="userType!=null and userType==3">
+					SELECT
+					upr.id,
+					upr.deal_code,
+					ca.com_name user_name,
+					upr.pay_cash,
+					CASE upr.pay_type WHEN 0 THEN '微信支付' WHEN 1 THEN '支付宝支付' WHEN 2 THEN
+					'充值账户支付' END pay_type,
+					CASE upr.pay_status WHEN 0 THEN '消费付款处理中' WHEN 2 THEN '消费付款失败' WHEN 1 THEN
+					'消费付款成功' END pay_status,
+					CASE upr.consum_type WHEN 0 THEN '购物消费' WHEN 1 THEN '打赏消费' WHEN 2 THEN
+					'案件悬赏消费' WHEN 3 THEN '提现消费' END consum_type,
+					CASE upr.in_out WHEN 0 THEN '收入' WHEN 1 THEN '支出' WHEN 2 THEN '其它' END
+					in_out,
+					upr.event_desc,
+					upr.user_account,
+					upr.payee_real_name,
+					upr.consum_time,
+					upr.created_time,
+					upr.updated_time
+					FROM
+					za_user_purchase_record upr
+					INNER JOIN za_com_authentication ca ON ca.id = upr.user_id
+			    	WHERE
+				  upr.user_type=2
+			 <if test="payType!=null">
+			 	AND upr.pay_type=#{payType,jdbcType=INTEGER}
+			 </if>
+			 <if test="consumType!=null">
+			 	AND upr.consum_type=#{consumType,jdbcType=INTEGER}
+			 </if>
+			 <if test="inOut!=null">
+			 	AND upr.in_out=#{inOut,jdbcType=INTEGER}
+			 </if>
+			 <if test="payStatus!=null">
+			 	AND upr.pay_status=#{payStatus,jdbcType=INTEGER}
+			 </if>
+			 <if test="userName!=null">
+			 	AND ca.com_name like #{userName,jdbcType=VARCHAR}
+			 </if>
+			 <if test ="startTime!= null">
+				AND  upr.updated_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+		   </if>
+				ORDER BY upr.updated_time DESC	
+    	</when>
+    	
+    </choose>
+  	
+  </select>
+  
+  <!-- 条件查询用户收益列表信息 -->
+  	<resultMap id="UserIncomeRecordListMap" type="com.tz.pojo.admin.ZaUserIncomeRecordAdminVo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="deal_code" property="dealCode" jdbcType="VARCHAR" />
+    <result column="in_cash" property="inCash" jdbcType="DECIMAL" />
+    <result column="in_status" property="in_status" jdbcType="VARCHAR" />
+    <result column="in_type" property="in_type" jdbcType="VARCHAR" />
+    <result column="in_out" property="in_out" jdbcType="VARCHAR" />
+    <result column="event_desc" property="eventDesc" jdbcType="VARCHAR" />
+    <result column="user_account" property="userAccount" jdbcType="VARCHAR" />
+    <result column="payee_real_name" property="payeeRealName" jdbcType="VARCHAR" />
+    <result column="income_time" property="incomeTime" jdbcType="TIMESTAMP" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <select id="getUserIncomeRecordList" resultMap="UserIncomeRecordListMap" parameterType="java.util.Map">
+  	<choose>
+  		<when test="userType!=null and userType==1">
+			SELECT
+			uir.id,
+			u.user_account user_name,
+			uir.deal_code,
+			uir.event_desc,
+			uir.in_cash,
+			CASE uir.in_status WHEN 0 THEN '处理中' WHEN 1 THEN '已到账' WHEN 2 THEN '处理中'
+			END in_status,
+			CASE uir.in_type WHEN 4 THEN '充值' WHEN 5 THEN '购物收益' WHEN 6 THEN '打赏收益'
+			WHEN 7 THEN '悬赏收益' WHEN 8 THEN '取消悬赏' END in_type,
+			CASE uir.in_out WHEN 0 THEN '收入' WHEN 1 THEN '支出' WHEN 2 THEN '其它' END
+			in_out,
+			uir.user_account,
+			uir.payee_real_name,
+			uir.income_time,
+			uir.created_time,
+			uir.updated_time
+			FROM
+			za_user_income_record uir
+			INNER JOIN za_user u on uir.user_id = u.id
+			WHERE uir.user_type=1
+			<if test="inOut!=null">
+			 	AND uir.in_out=#{inOut,jdbcType=INTEGER}
+			   </if>
+			   <if test="inStatus!=null">
+			   	AND uir.in_status =#{inStatus,jdbcType=INTEGER}
+			   </if>
+			   <if test="inType!=null">
+			   AND 	uir.in_type=#{inType,jdbcType=INTEGER}
+			   </if>
+			    <if test="userName!=null">
+			 	AND u.user_account like #{userName,jdbcType=VARCHAR}
+			 </if>
+			 <if test ="startTime!= null">
+				AND  uir.updated_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+		   </if>
+			  ORDER BY uir.updated_time DESC	
+  		</when>
+  		<when test="userType!=null and userType==2">
+				SELECT
+				uir.id,
+				CONCAT(la.real_name,'律师') user_name,
+				uir.deal_code,
+				uir.event_desc,
+				uir.in_cash,
+				CASE uir.in_status WHEN 0 THEN '处理中' WHEN 1 THEN '已到账' WHEN 2 THEN '处理中'
+				END in_status,
+				CASE uir.in_type WHEN 4 THEN '充值' WHEN 5 THEN '购物收益' WHEN 6 THEN '打赏收益'
+				WHEN 7 THEN '悬赏收益' WHEN 8 THEN '取消悬赏' END in_type,
+				CASE uir.in_out WHEN 0 THEN '收入' WHEN 1 THEN '支出' WHEN 2 THEN '其它' END
+				in_out,
+				uir.user_account,
+				uir.payee_real_name,
+				uir.income_time,
+				uir.created_time,
+				uir.updated_time
+				FROM
+				za_user_income_record uir
+				INNER JOIN za_lawyer_authentication la on uir.user_id = la.id
+				WHERE uir.user_type=2
+				<if test="inOut!=null">
+			 	AND uir.in_out=#{inOut,jdbcType=INTEGER}
+			   </if>
+			   <if test="inStatus!=null">
+			   	AND uir.in_status =#{inStatus,jdbcType=INTEGER}
+			   </if>
+			   <if test="inType!=null">
+			   	AND uir.in_type=#{inType,jdbcType=INTEGER}
+			   </if>
+			    <if test="userName!=null">
+			 	AND la.real_name like #{userName,jdbcType=VARCHAR}
+			 </if>
+			 	 <if test ="startTime!= null">
+				AND  uir.updated_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+		   </if>
+			  ORDER BY uir.updated_time DESC	
+  		</when>
+  		<when test="userType!=null and userType==3">
+				SELECT
+				uir.id,
+				ca.com_name user_name,
+				uir.deal_code,
+				uir.event_desc,
+				uir.in_cash,
+				CASE uir.in_status WHEN 0 THEN '处理中' WHEN 1 THEN '已到账' WHEN 2 THEN '处理中'
+				END in_status,
+				CASE uir.in_type WHEN 4 THEN '充值' WHEN 5 THEN '购物收益' WHEN 6 THEN '打赏收益'
+				WHEN 7 THEN '悬赏收益' WHEN 8 THEN '取消悬赏' END in_type,
+				CASE uir.in_out WHEN 0 THEN '收入' WHEN 1 THEN '支出' WHEN 2 THEN '其它' END
+				in_out,
+				uir.user_account,
+				uir.payee_real_name,
+				uir.income_time,
+				uir.created_time,
+				uir.updated_time
+				FROM
+				za_user_income_record uir
+				INNER JOIN za_com_authentication ca on uir.user_id = ca.id
+				WHERE uir.user_type=3
+				<if test="inOut!=null">
+			 	AND uir.in_out=#{inOut,jdbcType=INTEGER}
+			   </if>
+			   <if test="inStatus!=null">
+			   	AND uir.in_status =#{inStatus,jdbcType=INTEGER}
+			   </if>
+			   <if test="inType!=null">
+			   	AND uir.in_type=#{inType,jdbcType=INTEGER}
+			   </if>
+			    <if test="userName!=null">
+			 	AND ca.com_name like #{userName,jdbcType=VARCHAR}
+			 </if>
+			 	 <if test ="startTime!= null">
+				AND  uir.updated_time between #{startTime,jdbcType=TIMESTAMP} and #{endTime,jdbcType=TIMESTAMP}
+		   </if>
+			  ORDER BY uir.updated_time DESC	
+  		</when>
+  	</choose>
+  </select>
+  
+  
+</mapper>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/root"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:clipToPadding="false"
+                android:fitsSystemWindows="true">
+
+    <RelativeLayout
+        android:id="@id/title"
+        android:layout_width="fill_parent"
+        android:layout_height="46.0dip"
+        android:layout_alignParentTop="true"
+        android:background="@color/base_black">
+
+        <ImageView
+            android:id="@+id/iv_title_bg"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="fitXY"
+            android:visibility="visible"/>
+
+        <TextView
+            android:id="@+id/tv_baseLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10.0dip"
+            android:layout_marginTop="8.0dip"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_level_16"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/leftBtn"
+            android:layout_width="26.0dip"
+            android:layout_height="26.0dip"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8.0dip"
+            android:background="@mipmap/back_btn_child"
+            android:textSize="14.0sp"
+            android:visibility="visible"/>
+
+        <Button
+            android:id="@+id/rightBtn"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:textColor="@android:color/white"
+            android:textSize="16.0sp"
+            android:visibility="gone"/>
+
+        <ImageButton
+            android:id="@+id/righIvtBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8.0dip"
+            android:background="@mipmap/rightbuttonbg"
+            android:textColor="@android:color/white"
+            android:textSize="16.0sp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_rightBtnTips"
+            android:layout_width="16.0dip"
+            android:layout_height="16.0dip"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="1.8699951dip"
+            android:layout_marginTop="2.0dip"
+            android:background="@drawable/shape_red_ring_nostroke"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_level_10"
+            android:visibility="invisible"/>
+        <EditText
+            android:id="@+id/et_title_search"
+            android:layout_width="270.0dip"
+            android:layout_height="32dp"
+            android:layout_centerInParent="true"
+            android:drawablePadding="5.0dip"
+            android:gravity="center"
+            android:textColor="@color/text_black_light"
+            android:textSize="@dimen/text_level_14"
+            android:hint="输入关键词，例如：520白酒"
+            android:textColorHint="@color/text_black_light"
+            android:background="@drawable/shape_btn_write"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="200.0dip"
+            android:layout_height="fill_parent"
+            android:layout_centerInParent="true"
+            android:drawablePadding="5.0dip"
+            android:ellipsize="marquee"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:maxEms="8"
+            android:text="@string/app_name"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_level_20"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/warn_container"
+        android:layout_width="fill_parent"
+        android:layout_height="35.0dip"
+        android:layout_below="@id/title"
+        android:background="#ffffffff"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10.0dip"
+            android:drawablePadding="4.0dip"
+            android:gravity="center_vertical"
+            android:text="检查网络"
+            android:textColor="@color/base_black"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/base_container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/warn_container"
+        android:background="@color/base_gray"
+        android:orientation="vertical"/>
+</RelativeLayout>

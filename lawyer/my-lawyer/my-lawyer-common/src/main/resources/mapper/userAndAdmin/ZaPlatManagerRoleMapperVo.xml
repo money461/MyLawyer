@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.vo.ZaPlatManagerRoleMapperVo" >
+  <resultMap id="BaseResultMap" type="com.tz.pojo.ZaPlatManagerRole" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="manager_id" property="managerId" jdbcType="VARCHAR" />
+    <result column="role_id" property="roleId" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <!-- 为管理员添加角色至中间信息表 -->
+  <insert id="batchInsertManagerRoleData" parameterType="java.util.List" >
+    insert into za_plat_manager_role (id, manager_id, role_id, 
+      operator, created_time, updated_time)
+    values 
+     <foreach collection="managerRoleList" index="index" item="managerRole"   separator="," >
+      ( #{managerRole.id,jdbcType=VARCHAR}, #{managerRole.managerId,jdbcType=VARCHAR}, #{managerRole.roleId,jdbcType=VARCHAR}, 
+      #{managerRole.operator,jdbcType=VARCHAR},NOW(), NOW() )
+     </foreach>
+  </insert>
+  
+  <!-- 删除该管理员角色中间表信息 -->
+  <delete id="deleteManagerRoleByManagerId" parameterType="java.lang.String">
+  	DELETE FROM za_plat_manager_role WHERE manager_id=#{id}
+  </delete>
+  
+  <!-- 删除该角色用户中间表信息 -->
+  <delete id="delPlatManagerRoleByRoleId" parameterType="java.lang.String">
+  	DELETE FROM za_plat_manager_role WHERE role_id=#{id}
+  </delete>
+  
+</mapper>

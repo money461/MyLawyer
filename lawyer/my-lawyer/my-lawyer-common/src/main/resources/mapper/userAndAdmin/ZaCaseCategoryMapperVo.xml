@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tz.mapper.vo.ZaCaseCategoryMapperVo" >
+  <resultMap id="selectCategoryAndChSonListMap" type="com.tz.pojo.vo.ZaCaseCategoryVo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="p_id" property="pId" jdbcType="INTEGER" />
+    <result column="sort_code" property="sortCode" jdbcType="INTEGER" />
+    <result column="case_name" property="caseName" jdbcType="VARCHAR" />
+    <result column="annotate" property="annotate" jdbcType="VARCHAR" />
+    <result column="logo_url" property="logoUrl" jdbcType="VARCHAR" />
+    <result column="link_address" property="linkAddress" jdbcType="VARCHAR" />
+    <result column="case_status" property="caseStatus" jdbcType="INTEGER" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <collection property="zaCaseCategorys" ofType="com.tz.pojo.ZaCaseCategory">
+    	 <id column="ch_id" property="id" jdbcType="INTEGER" />
+    	 <result column="ch_case_name" property="caseName" jdbcType="VARCHAR" />
+    </collection>
+    </resultMap>
+    <select id="selectCategoryAndChSonList" resultMap="selectCategoryAndChSonListMap" parameterType="java.util.HashMap">
+    	SELECT
+		zcc.id,
+		zcc.p_id,
+		zcc.sort_code,
+		zcc.case_name,
+		zcc.annotate,
+		zcc.logo_url,
+		zcc.link_address,
+		zcc.case_status,
+		zcc.created_time,
+		zcc.updated_time,
+		zcc.operator,
+		zcc2.id AS ch_id,
+		zcc2.case_name AS ch_case_name
+		FROM
+			za_case_category zcc
+		LEFT JOIN za_case_category zcc2 ON zcc.id = zcc2.p_id
+		WHERE
+			zcc.p_id = 0
+			<if test="caseName!= null">
+			AND zcc.case_name LIKE #{caseName,jdbcType=VARCHAR}
+		</if>
+		<if test="startTime!= null">
+			AND zcc.created_time between
+			#{startTime,jdbcType=TIMESTAMP} and
+			#{endTime,jdbcType=TIMESTAMP}
+		</if>
+		ORDER BY
+			zcc.created_time DESC
+    </select>
+</mapper>

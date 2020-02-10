@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="260dp"
+              android:layout_height="match_parent"
+              android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_dialog_warning"
+        android:orientation="vertical" >
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="80dp">
+            <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/text_spacing_larger"
+            android:drawablePadding="@dimen/text_spacing_medium"
+            android:text="可提取爱心值"
+            android:textColor="@color/text_black_light"
+            android:textSize="@dimen/text_level_14" />
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:textColor="@color/text_orange"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:text="100"
+                android:textSize="@dimen/text_level_14"/>
+        </RelativeLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/base_gray" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="80dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:gravity="center"
+                android:layout_marginLeft="@dimen/text_spacing_larger"
+                android:drawablePadding="@dimen/text_spacing_medium"
+                android:text="本次提取爱心值"
+                android:textColor="@color/text_black_light"
+                android:textSize="@dimen/text_level_14" />
+            <EditText
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:textColor="@color/text_black_light"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:background="@drawable/shape_btn_orange_transparent"
+                android:text="500"
+                android:textSize="@dimen/text_level_14"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp" >
+
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="110dp"
+            android:layout_height="40dp"
+            android:text="取消"
+            android:background="@drawable/shape_btn_white_transparent"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+
+        <Button
+            android:id="@+id/btn_enextract"
+            android:layout_width="110dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/shape_btn_orange_transparent"
+            android:textColor="@color/text_orange"
+            android:text="确认提取"
+            android:textSize="15sp" />
+    </RelativeLayout>
+</LinearLayout>

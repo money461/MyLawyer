@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tz.mapper.index.vo.ZaLawyerAuthenticationMapperIndexVo">
+  <resultMap id="BaseResultMap" type="com.tz.pojo.index.vo.ZaLawyerAuthenticationIndexVo">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="grade" jdbcType="VARCHAR" property="grade" />
+    <result column="law_case" jdbcType="VARCHAR" property="lawCase" />
+    <result column="age_limit" jdbcType="INTEGER" property="ageLimit" />
+    <result column="law_office" jdbcType="VARCHAR" property="lawOffice" />
+    <result column="law_introduce" jdbcType="VARCHAR" property="lawIntroduce" />
+    <result column="licence_url" jdbcType="VARCHAR" property="licenceUrl" />
+    <result column="qualification_url" jdbcType="VARCHAR" property="qualificationUrl" />
+    <result column="ID_card" jdbcType="VARCHAR" property="idCard" />
+    <result column="law_logo" jdbcType="VARCHAR" property="lawLogo" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="law_phone" property="lawPhone" jdbcType="VARCHAR" />
+    <result column="law_address" jdbcType="VARCHAR" property="lawAddress" />
+    <result column="com_lon" jdbcType="DOUBLE" property="comLon" />
+    <result column="com_lat" jdbcType="DOUBLE" property="comLat" />
+    <result column="geo_code" jdbcType="CHAR" property="geoCode" />
+    <result column="law_status" jdbcType="INTEGER" property="lawStatus" />
+    <result column="created_time" jdbcType="TIMESTAMP" property="createdTime" />
+    <result column="examine_time" jdbcType="TIMESTAMP" property="examineTime" />
+    <result column="updated_time" jdbcType="TIMESTAMP" property="updatedTime" />
+    <result column="examine_id" jdbcType="VARCHAR" property="examineId" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+  </resultMap>
+  
+  
+  <!-- 推荐律师映射关系 -->
+  <resultMap type="com.tz.pojo.index.vo.RecomSelectionLawyerVo" id="LawyerAuthenticationMap">
+  	  <result column="category_id"  property="categoryId" jdbcType="VARCHAR" />
+  	  <result column="sort_code"  property="sortCode" jdbcType="VARCHAR" />
+  	  <result column="category_name"  property="categoryName" jdbcType="VARCHAR" />
+	  <!-- 一对多关系 -->  	    	  
+	  <collection  property="RecommendLawInfoList" ofType="com.tz.pojo.index.vo.ZaLawyerAuthenticationIndexVo">
+			<id column="id" jdbcType="VARCHAR" property="id" />
+			<result column="real_name" jdbcType="VARCHAR" property="realName" />
+			<result column="grade" jdbcType="VARCHAR" property="grade" />
+			<result column="law_case" jdbcType="VARCHAR" property="lawCase" />
+			<result column="law_office" jdbcType="VARCHAR" property="lawOffice" />
+			<result column="law_logo" jdbcType="VARCHAR" property="lawLogo" />
+			<result column="province" jdbcType="VARCHAR" property="province" />
+			<result column="city" jdbcType="VARCHAR" property="city" />
+			<result column="law_phone" property="lawPhone" jdbcType="VARCHAR" />
+			<result column="com_lon" jdbcType="DOUBLE" property="comLon" />
+			<result column="com_lat" jdbcType="DOUBLE" property="comLat" />
+			<result column="usernick" property="usernick" jdbcType="VARCHAR" />
+			<result column="password" property="password" jdbcType="VARCHAR" />
+			<result column="username" property="username" jdbcType="VARCHAR" />
+	 </collection>
+  </resultMap>
+  
+  <!-- 推荐用户已认证律师信息-->
+  <select id="getRecommendLawInfo" resultMap="LawyerAuthenticationMap" parameterType="java.util.Map">
+			SELECT
+			ca.id category_id,
+			ca.category_name,
+			ca.sort_code,
+			la.id,
+			CONCAT(
+			LEFT (la.real_name, 1),
+			'律师'
+			) real_name,
+			la.grade,
+			la.law_case,
+			la.law_office,
+			la.law_logo,
+			la.province,
+			la.law_phone,
+			la.city,
+			la.com_lon,
+			la.com_lat,
+		     ue.usernick,
+             ue.password,
+             ue.username
+			FROM
+			za_content_category ca
+			INNER JOIN `za_lawyer_authentication` la ON 1 = 1
+			INNER JOIN za_user_escrow ue ON la.id= ue.user_id
+			<choose>
+				<when test="caseId!=null">
+			INNER JOIN za_lawyer_case lc ON la.id = lc.law_id
+				WHERE  lc.case_id = #{caseId}
+				 AND 
+				</when>
+				<otherwise>
+				 WHERE
+				</otherwise>
+			</choose>
+			ca.category_status = 1
+			AND la.law_status = 1
+			AND ue.type=4
+			<if test="sortCode!=null">
+		    	AND ca.sort_code = #{sortCode}
+			</if>
+			<if test="geoCode!=null">
+				AND la.geo_code LIKE CONCAT(#{geoCode}, '%')
+			</if>
+			<if test="sortCode!=null and sortCode==7">
+			ORDER BY  RAND() LIMIT 2
+			</if>
+  </select>
+  <!-- 查询律师详细信息 -->
+  <resultMap type="com.tz.pojo.index.vo.LawyerDetailInfo" id="LawyerDetailMap">
+  	 <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="grade" jdbcType="VARCHAR" property="grade" />
+    <result column="law_case" jdbcType="VARCHAR" property="lawCase" />
+    <result column="age_limit" jdbcType="INTEGER" property="ageLimit" />
+    <result column="law_office" jdbcType="VARCHAR" property="lawOffice" />
+    <result column="law_phone" property="lawPhone" jdbcType="VARCHAR" />
+    <result column="law_introduce" jdbcType="VARCHAR" property="lawIntroduce" />
+  	<result column="law_logo" jdbcType="VARCHAR" property="lawLogo" />
+  	<result column="online" jdbcType="VARCHAR" property="online" />
+  	<result column="usernick" property="usernick" jdbcType="VARCHAR" />
+	<result column="password" property="password" jdbcType="VARCHAR" />
+	<result column="username" property="username" jdbcType="VARCHAR" />
+  	<!-- 律师的成绩案例-->
+  	<collection property="LawyerAchievementList" ofType="com.tz.pojo.index.vo.ZaLawyerAchievementsVo">
+	    <result column="case_name" property="caseName" jdbcType="VARCHAR" />
+	    <result column="case_desc" property="caseDesc" jdbcType="VARCHAR" />
+	    <result column="case_begin" property="caseBegin" jdbcType="TIMESTAMP" />
+	    <result column="case_end" property="caseEnd" jdbcType="TIMESTAMP" />
+  	</collection>
+  </resultMap>
+  <select id="getLawyerDetailById" resultMap="LawyerDetailMap" parameterType="java.lang.String">
+			 SELECT
+			aut.id,
+			aut.user_id,
+			aut.law_introduce,
+			CONCAT(
+				LEFT (aut.real_name, 1),
+				'律师'
+			) real_name,
+			aut.law_office,
+			aut.grade,
+			aut.law_case,
+			aut.age_limit,
+			aut.law_phone,
+			aut.law_logo,
+			CASE aut.state WHEN 0 THEN '在线' WHEN 1 THEN '离线' end online,
+			CONCAT(ca.case_name,'类型案件') case_name,
+			ach.case_desc,
+			ach.case_begin,
+			ach.case_end,
+			 ue.usernick,
+             ue.password,
+             ue.username
+		FROM
+			za_lawyer_authentication aut
+	    INNER JOIN za_user_escrow ue ON aut.id= ue.user_id
+		LEFT JOIN za_lawyer_achievements ach ON aut.id = ach.law_id
+		LEFT JOIN za_case_category ca ON ach.case_id= ca.id
+		WHERE
+			aut.law_status = 1
+			AND ue.type=4
+		    AND aut.id =#{id,jdbcType=VARCHAR}
+  </select>
+ 
+ <!-- 查询我的律师 -->
+ <resultMap type="com.tz.pojo.index.vo.ZaLawyerAuthenticationIndexVo" id="getMyLawyerMap">
+ 	<id column="id" jdbcType="VARCHAR" property="id" />
+	<result column="real_name" jdbcType="VARCHAR" property="realName" />
+	<result column="grade" jdbcType="VARCHAR" property="grade" />
+	<result column="law_case" jdbcType="VARCHAR" property="lawCase" />
+	<result column="law_office" jdbcType="VARCHAR" property="lawOffice" />
+	<result column="law_logo" jdbcType="VARCHAR" property="lawLogo" />
+	<result column="province" jdbcType="VARCHAR" property="province" />
+	<result column="city" jdbcType="VARCHAR" property="city" />
+	<result column="law_phone" property="lawPhone" jdbcType="VARCHAR" />
+	<result column="com_lon" jdbcType="DOUBLE" property="comLon" />
+	<result column="com_lat" jdbcType="DOUBLE" property="comLat" />
+	<result column="usernick" property="usernick" jdbcType="VARCHAR" />
+	<result column="password" property="password" jdbcType="VARCHAR" />
+	<result column="username" property="username" jdbcType="VARCHAR" />
+ </resultMap>
+ 
+ <select id="getMyLawyer" resultMap="getMyLawyerMap" parameterType="java.lang.String">
+		   SELECT
+			au.id,
+		  CONCAT(LEFT(au.real_name,1),'律师') real_name,
+		  au.grade,
+		  au.province,
+		  au.city,
+		  au.Law_case,
+		  au.law_phone,
+		  au.com_lon,
+		  au.com_lat,
+		  ue.usernick,
+          ue.password,
+          ue.username
+		FROM
+			za_user_lawyer ul
+		INNER JOIN za_lawyer_authentication au ON ul.law_id = au.id
+		INNER JOIN za_user_escrow ue ON au.id= ue.user_id
+		WHERE
+		    ue.type=4
+		    AND 
+			ul.user_id =#{userId}
+ </select>
+ 
+ <!-- 修改用户在线或者离线状态 -->
+ <update id="updateOnlineState">
+      <choose>
+      	<when test="userType==1">
+		UPDATE za_user
+		SET state = #{state}
+		WHERE id =#{userId} 
+      	</when>
+      	<when test="userType==2">
+			UPDATE za_lawyer_authentication
+			SET state = #{state}
+			WHERE id =#{userId}
+      	</when>
+      	<when test="userType==3">
+      		UPDATE za_com_authentication
+			SET state = #{state}
+			WHERE
+				id =#{userId}
+      	</when>
+      </choose>
+ </update>
+ 
+ 
+</mapper>

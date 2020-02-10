@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFD21E</color>
+    <color name="colorPrimaryDark">#0E161E</color>
+    <color name="colorAccent">#FF4081</color>
+    <!-- title背景蓝 -->
+    <color name="base_black">#0E161E</color>
+    <color name="black">#000</color>
+
+    <!--按钮背景色-->
+    <color name="btn_red">#D56362</color>
+
+    <!-- 字体颜色 -->
+    <color name="mobile_loan_font_1">#FFFFFF</color>
+    <color name= "text_gary">#999999</color>
+    <color name = "text_orange">#FFD21E</color>
+    <color name = "text_blue">#3491f8</color>
+    <color name = "text_title_back">#525252</color>
+    <color name="text_black">#333333</color>
+    <color name="text_black_light">#666666</color>
+    <color name="text_green">#72cb61</color>
+
+    <!-- transparent color -->
+    <color name="nav_color">#00BBFF</color>
+    <color name="white">#ffffff</color>
+    <color name="transparent_black">#00000000</color>
+    <color name="transparent_half_black">#5F000000</color>
+    <color name="transparent_gray">#7F000000</color>
+    <color name="transparent_gray1">#66000000</color>
+    <color name="transparent_loginpop">#99000000</color>
+    <color name="base_background">#EEEEEE</color>
+    <color name="tv_name">#BEBEBE</color>
+    <color name="tv_value">#000000</color>
+    <color name="tv_cycle_background">#FFDD00</color>
+    <color name="bar2_text3">#00a6ec</color>
+    <color name="mymsg_tips">#5F5F5F</color>
+
+
+    <!-- gray -->
+    <color name ="base_gray">#F0F0F0</color>
+    <color name="gray19">#f8f8f8</color>
+    <color name ="view_line">#edeef0</color>
+    <color name="gray_text_color">#888888</color>
+    <color name="base_gray_shape">#eeeef0</color>
+    <color name="viewline_onbasegray">#dadadc</color>
+    <color name="grey_color1">#333333</color>
+    <color name="grey_color2">#666666</color>
+    <color name="grey_color3">#999999</color>
+
+
+    <color name="btn_blue">#55a3bf</color>
+    <!-- 天蓝色 -->
+    <color name="gray">#808080</color>
+    <color name="pickerview_timebtn_nor">#057dff</color>
+    <color name="pickerview_timebtn_pre">#c2daf5</color>
+    <color name="pickerview_bg_topbar">#f5f5f5</color>
+    <color name="pickerview_topbar_title">#000000</color>
+    <color name="pickerview_wheelview_textcolor_out">#a8a8a8</color>
+    <color name="pickerview_wheelview_textcolor_center">#2a2a2a</color>
+    <color name="pickerview_wheelview_textcolor_divider">#d5d5d5</color>
+    <!--覆盖颜色-->
+    <color name="bgColor_overlay">#60000000</color>
+    <color name="actionsheet_gray">#8F8F8F</color>
+    <color name="transparent_white">#00ffffff</color>
+    <color name="gray13">#ededed</color>
+
+    <color name="base_nav_title">#444444</color>
+    <color name="gray_back">#eeeeee</color>
+    <color name="gray_line_color">#dddddd</color>
+    <color name="base_text_gray">#888888</color>
+    <color name="red">#FF0000</color>
+
+
+    <color name="blue">#ffccddff</color>
+    <color name="grey">#58616d</color>
+    <color name="darkgrey">#ff404040</color>
+    <color name="toasterro">#9fd524</color>
+    <color name="lightgrey">#ff888888</color>
+    <color name="semitransparent">#80000000</color>
+    <color name="lightransparent">#a0000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="navpage">#FFE1E8EB</color>
+
+    <color name="lightblack">#ff202020</color>
+</resources>

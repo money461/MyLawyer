@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:background="@color/white">
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="118dp"
+            android:layout_height="118dp"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="118dp"
+            android:orientation="vertical"
+            android:layout_marginLeft="14dp">
+            <TextView
+                android:id="@+id/item_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_level_14"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:textColor="@color/text_black"
+                android:text=""/>
+            <TextView
+                android:id="@+id/item_description"
+                android:layout_below="@+id/item_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_level_13"
+                android:maxLines="3"
+                android:ellipsize="end"
+                android:textColor="@color/text_gary"
+                android:layout_marginTop="@dimen/text_spacing_medium"
+                android:text=""/>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentBottom="true">
+                <TextView
+                    android:id="@+id/item_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="@dimen/text_level_12"
+                    android:gravity="bottom"
+                    android:text="普通价：￥598"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/text_orange"
+                    android:textSize="@dimen/text_level_12"
+                    android:gravity="bottom"
+                    android:layout_toLeftOf="@+id/item_memberPrice"
+                    android:text="会员价:"/>
+                <TextView
+                    android:id="@+id/item_memberPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:gravity="bottom"
+                    android:textSize="@dimen/text_level_16"
+                    android:text="200"
+                    android:textColor="@color/text_orange"/>
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>
